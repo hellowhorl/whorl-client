@@ -12,6 +12,7 @@ dependencies = [
     "fake-useragent",
     "python-dotenv",
     "requests",
+    "requests-kerberos",
     "rich"
 ]
 

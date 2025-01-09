@@ -1,6 +1,7 @@
 import os
 import json
 import requests
+from requests_kerberos import HTTPKerberosAuth, REQUIRED
 
 from dotenv import load_dotenv
 
@@ -11,8 +12,10 @@ def get():
         f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence",
         params = {
             "charname": os.getenv('GITHUB_USER')
-        }
+        },
+        auth=HTTPKerberosAuth(mutual_authentication = REQUIRED, force_preemptive = True)
     )
+    print(response.content)
     return response.json()
 
 def post():
@@ -22,7 +25,8 @@ def post():
             "username": os.getenv('GITHUB_USER'),
             "charname": os.getenv('GITHUB_USER'),
             "working_dir": os.getcwd()
-        }
+        },
+        auth=HTTPKerberosAuth(mutual_authentication = REQUIRED, force_preemptive = True)
     )
     if response.status_code == 201:
         return True
@@ -35,7 +39,8 @@ def patch(data: dict = {}):
             "charname": data['charname'],
             "working_dir": os.getcwd(),
             "partial": True
-        }
+        },
+        auth=HTTPKerberosAuth(mutual_authentication = REQUIRED, force_preemptive = True)
     )
     if response.status_code == 200:
         return True
