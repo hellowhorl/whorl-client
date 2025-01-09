@@ -1,12 +1,14 @@
 """Provide a weather report on local climate."""
 
 import os
-import requests
 import json
+import requests
 
 from rich.console import Console
 from rich.table import Table
 from dotenv import load_dotenv
+
+from requests_kerberos import OPTIONAL, MutualAuthenticationError, HTTPKerberosAuth
 
 # Load environment variables from .env file
 # TODO: Do we need to provide guarding around this variable
@@ -21,20 +23,29 @@ def convert_temp_scale(state: dict = {}) -> None:
                 state["main"][field] = (state["main"][field] * 1.8) + 32
         state["main"][field] = round(state["main"][field], 2)
 
-# Import and call the load_dotenv function from the dotenv module (loads environment variables from a .env file)
-from dotenv import load_dotenv
-load_dotenv()
-
 def main():
     """Display the weather report."""
     # Define api_url and port variables
     api_url = os.getenv("API_URL")
     api_port = os.getenv("API_PORT")
-
+    kerberos_auth = HTTPKerberosAuth(
+        force_preemptive = True,
+        delegate = True,
+        mutual_authentication = OPTIONAL
+    )
     # Sends a get request to the url and stores the response
+    try:
+        requests.get(
+                f"http://dev.chompe.rs/v1/climate",
+             auth = kerberos_auth
+        ).content
+    except MutualAuthenticationError:
+        pass
+    
     STATE = json.loads(
         requests.get(
-            f"{api_url}:{api_port}/v1/climate"
+            f"http://dev.chompe.rs/v1/climate",
+            auth = kerberos_auth
         ).content
     )
 
@@ -68,7 +79,7 @@ def main():
         ("Humidity", f'{STATE["main"]["humidity"]}%'),
         ("Visibility", f'{STATE["visibility"]} m'),
         ("Wind Speed", f'{STATE["wind"]["speed"]} m/s'),
-        ("Rain", f'{STATE.get("rain", {}).get("1h", "N/A")} mm'),
+        # ("Rain", f'{STATE.get("rain", {}).get("1h", "N/A")} mm'),
         ("Clouds", f'{STATE["clouds"]["all"]}%')
     ]
     for i, (label, value) in enumerate(data):

@@ -13,7 +13,7 @@ def get():
         params = {
             "charname": os.getenv('GITHUB_USER')
         },
-        auth=HTTPKerberosAuth(mutual_authentication = REQUIRED, force_preemptive = True)
+        auth=HTTPKerberosAuth()
     )
     print(response.content)
     return response.json()
