@@ -1,21 +1,34 @@
 import os
 import json
 import requests
-from requests_kerberos import HTTPKerberosAuth, REQUIRED
+from requests_kerberos import OPTIONAL, MutualAuthenticationError, HTTPKerberosAuth
 
 from dotenv import load_dotenv
 
 load_dotenv()
 
 def get():
+    # TODO: Remove all "greenlight" requests; remove HTTP principal from
+    #       Kerberos server
+    kerberos_auth = HTTPKerberosAuth(
+        force_preemptive = True,
+        delegate = True,
+        mutual_authentication = OPTIONAL
+    )
+    try:
+        requests.get(
+            f"http://dev.chompe.rs/v1/omnipresence",
+             auth = kerberos_auth
+        ).content
+    except MutualAuthenticationError:
+        pass
     response = requests.get(
-        f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence",
+        f"http://dev.chompe.rs/v1/omnipresence",
         params = {
             "charname": os.getenv('GITHUB_USER')
         },
-        auth=HTTPKerberosAuth()
+        auth=kerberos_auth
     )
-    print(response.content)
     return response.json()
 
 def post():
@@ -26,7 +39,7 @@ def post():
             "charname": os.getenv('GITHUB_USER'),
             "working_dir": os.getcwd()
         },
-        auth=HTTPKerberosAuth(mutual_authentication = REQUIRED, force_preemptive = True)
+        auth=HTTPKerberosAuth(mutual_authentication = OPTIONAL, force_preemptive = True)
     )
     if response.status_code == 201:
         return True

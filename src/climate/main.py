@@ -45,7 +45,7 @@ def main():
     STATE = json.loads(
         requests.get(
             f"http://dev.chompe.rs/v1/climate",
-            auth = kerberos_auth
+            auth = kerberos_auth,
         ).content
     )
 
