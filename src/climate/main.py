@@ -4,6 +4,8 @@ import os
 import json
 import requests
 
+import watchdog
+
 from rich.console import Console
 from rich.table import Table
 from dotenv import load_dotenv
@@ -28,26 +30,29 @@ def main():
     # Define api_url and port variables
     api_url = os.getenv("API_URL")
     api_port = os.getenv("API_PORT")
-    kerberos_auth = HTTPKerberosAuth(
-        force_preemptive = True,
-        delegate = True,
-        mutual_authentication = OPTIONAL
-    )
+    #kerberos_auth = HTTPKerberosAuth(
+    #    force_preemptive = True,
+    #    delegate = True,
+    #    mutual_authentication = OPTIONAL
+    #)
+
     # Sends a get request to the url and stores the response
-    try:
-        requests.get(
-                f"http://dev.chompe.rs/v1/climate",
-             auth = kerberos_auth
-        ).content
-    except MutualAuthenticationError:
-        pass
+    #try:
+    #    requests.get(
+    #            f"http://dev.chompe.rs/v1/climate",
+    #         auth = kerberos_auth
+    #    ).content
+    #except MutualAuthenticationError:
+    #    pass
     
-    STATE = json.loads(
-        requests.get(
-            f"http://dev.chompe.rs/v1/climate",
-            auth = kerberos_auth,
-        ).content
-    )
+    session = watchdog.Auth()
+
+    #STATE = json.loads(
+    #    requests.get(
+    #        f"http://dev.chompe.rs/v1/climate",
+    #        auth = kerberos_auth,
+    #    ).content
+    #)
 
     # Convert the temperature scale to environment-defined scale
     convert_temp_scale(STATE)
