@@ -1,0 +1,30 @@
+{
+  "image": "ghcr.io/hellowhorl/world:dev-0.1.2",
+  "runArgs": ["--privileged"],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.pylint",
+        "charliermarsh.ruff",
+        "bierner.markdown-checkbox"
+      ],
+      "settings": {
+        "files.exclude": {
+          "**/.**": true,
+          "**/__**": true
+        }
+      }
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "containerEnv": {
+    "API_URL": "https://dev.chompe.rs",
+    "API_PORT": "443",
+    "NFS_DEST": "universe-dev"
+  },
+  "postCreateCommand": "sudo mount -a"
+}
