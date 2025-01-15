@@ -1,6 +1,7 @@
 import os
 import base64
 import inspect
+import getpass
 import importlib
 
 from .specs import ItemSpec
@@ -36,7 +37,7 @@ class Instance:
 
     def __enumerate_properties(self) -> None:
         self.transmit = {
-            "item_owner": os.getenv("GITHUB_USER"),
+            "item_owner": os.getenv("GITHUB_USER") or getpass.getuser(),
             "item_qty": 1,
         }
         instance = self.mod()

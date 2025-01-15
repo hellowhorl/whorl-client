@@ -26,7 +26,7 @@ class Give:
         item = requests.post(
             f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/inventory/search/",
             data = {
-                "charname": os.getenv('GITHUB_USER'),
+                "charname": os.getenv('GITHUB_USER') or getpass.getuser(),
                 "item_name": self.item_name
             }
         )
@@ -53,7 +53,7 @@ class Give:
         result = requests.patch(
             f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/inventory/transfer/{self.item_receiver}",
             data = {
-                "charname": os.getenv('GITHUB_USER'),
+                "charname": os.getenv('GITHUB_USER') or getpass.getuser(),
                 "item_name": self.item_name
             }
         )
