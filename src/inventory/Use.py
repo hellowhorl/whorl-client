@@ -2,6 +2,7 @@ import os
 import sys
 import types
 import base64
+import getpass
 import requests
 import importlib
 
@@ -28,7 +29,7 @@ class Usage:
         item = requests.post(
             f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/inventory/search/",
             data = {
-                "charname": os.getenv('GITHUB_USER'),
+                "charname": os.getenv('GITHUB_USER') or getpass.getuser(),
                 "item_name": self.item_name
             }
         )
@@ -49,7 +50,7 @@ class Usage:
             f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/inventory/reduce/",
             data = {
                 "item_name": self.item_name,
-                "item_owner": os.getenv('GITHUB_USER')
+                "item_owner": os.getenv('GITHUB_USER') or getpass.getuser()
             }
         )
 

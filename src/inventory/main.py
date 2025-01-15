@@ -3,6 +3,7 @@ import sys
 import base64
 import pennant
 import requests
+import getpass
 
 from dotenv import load_dotenv
 
@@ -20,7 +21,7 @@ def list():
     api_request = requests.get(
         f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/inventory/list",
         params = {
-            "charname": os.getenv('GITHUB_USER')
+            "charname": os.getenv('GITHUB_USER') or getpass.getuser()
         }
     )
 
@@ -30,7 +31,7 @@ def list():
     for item in context:
         total_volume += item['item_bulk']
 
-    table = Table(title=f"""{os.getenv('GITHUB_USER')}'s inventory
+    table = Table(title=f"""{os.getenv('GITHUB_USER') or getpass.getuser()}'s inventory
 ({total_volume}/10.0 spaces; {10.0 - total_volume} spaces remain)""")
     table.add_column("Item name")
     table.add_column("Item count")
