@@ -68,7 +68,7 @@ def main():
         ("Humidity", f'{STATE["main"]["humidity"]}%'),
         ("Visibility", f'{STATE["visibility"]} m'),
         ("Wind Speed", f'{STATE["wind"]["speed"]} m/s'),
-        ("Rain", f'{STATE.get("rain", {}).get("1h", "N/A")} mm'),
+        # ("Rain", f'{STATE.get("rain", {}).get("1h", "N/A")} mm'),
         ("Clouds", f'{STATE["clouds"]["all"]}%')
     ]
     for i, (label, value) in enumerate(data):
