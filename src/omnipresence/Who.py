@@ -1,10 +1,10 @@
 import os
 import sys
+import getpass
 import requests
 
 from rich.console import Console
 from rich.markdown import Markdown
-
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -13,7 +13,7 @@ class Who:
 
     def __init__(self):
         self.cwd = os.getcwd()
-        self.user = os.getenv('GITHUB_USER')
+        self.user = os.getenv('GITHUB_USER') or getpass.getuser()
         user_list = self.__get_user_list()
         self.__display_user_list(user_list)
 

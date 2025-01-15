@@ -1,5 +1,6 @@
 import os
 import sys
+import getpass
 import requests
 
 from rich.console import Console
@@ -11,7 +12,7 @@ load_dotenv()
 class Ego:
 
     def __init__(self, type: str = "", name: str = "", mode="talk"):
-        self.addressee = os.getenv('GITHUB_USER')
+        self.addressee = os.getenv('GITHUB_USER') or getpass.getuser()
         self.archetype = type
         self.named = name or type
         self.chatterbox = False
@@ -30,7 +31,7 @@ class Ego:
         content = requests.post(
             f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/persona/generate/{self.archetype}",
             data={
-                "charname": os.getenv('GITHUB_USER'),
+                "charname": os.getenv('GITHUB_USER') or getpass.getuser(),
                 "message": msg
             },
             stream=True
