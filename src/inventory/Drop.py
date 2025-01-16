@@ -39,6 +39,7 @@ class Dropped:
                 "item_name": item_name
             }
         )
+        print(item.content)
         return item.json()
 
     def __convert_to_py_file(self, item_binary) -> str:
