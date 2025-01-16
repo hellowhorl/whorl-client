@@ -9,6 +9,7 @@ load_dotenv()
 try:
     root_dir = os.path.expanduser(os.getenv('FILE_SYSTEM') + os.getenv('RepositoryName'))
 except TypeError:
+    # TODO: Determine if this is simply more reliable.
     cwd = os.getcwd()
     while cwd != "/":
         path = os.path.join(cwd, ".git")
