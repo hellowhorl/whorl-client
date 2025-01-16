@@ -25,7 +25,6 @@ def post():
             "working_dir": os.getcwd()
         }
     )
-    print(response.content)
     if response.status_code == 201:
         return True
     return False
