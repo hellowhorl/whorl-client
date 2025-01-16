@@ -1,3 +1,32 @@
+# Setting up Whorl-Client
+
+## Prerequisites 
+1. Clone the client repository 
+
+    ```sh
+    git clone git@github.com:allegheny-college-cmpsc-404-spring-2025/whorl-client.git
+    ``` 
+
+2. Setup a virtual environment 
+
+    here you work to utilize `venv` short for virtual environment specific for your client. 
+
+    ```sh
+    python -m venv .venv
+    ``` 
+    then run this next command 
+    Source .venv/bin/activate
+    ```
+    PSA - your virtual environment will stay open so when finish run comand 'deactivate'
+
+3. once your virtual environment is finished being set up perform a development install python -m pip install -e 
+
+4. The client repository requires .env files using dotenv.org to manage our files you will need to have nodejs instaalled to your machine and you will download it using the npx command 
+
+    https://nodejs.org/en/download 
+
+5. lastly you will need to access the client through your machine and access the main folder then you will run npx dotenv-vault@latest pull
+
 # Testing whorl-client locally
 
 ## Prerequisites
