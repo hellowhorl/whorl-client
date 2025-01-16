@@ -12,7 +12,17 @@ from rich.console import Console
 
 load_dotenv()
 
-# TODO: Move this to a specific command file (like others) instead of main
+# TODO: Move these to a specific command file (like others) instead of main
+
+def search(item_name: str = "", qty_required: int = 1) -> bool:
+    response = requests.post(
+        f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/inventory/search/",
+        data = {
+            "charname": os.getenv("GITHUB_USER") or getpass.getuser(),
+            "item_name": item_name
+        }
+    )
+    return response.status_code == 200 and response.json()["item_qty"] >= qty_required
 
 def list():
 
