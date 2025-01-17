@@ -1,11 +1,21 @@
 import os
 import json
 
+from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv()
 
-root_dir = os.path.expanduser(os.getenv('FILE_SYSTEM') + os.getenv('RepositoryName'))
+try:
+    root_dir = os.path.expanduser(os.getenv('FILE_SYSTEM') + os.getenv('RepositoryName'))
+except TypeError:
+    # TODO: Determine if this is simply more reliable.
+    cwd = os.getcwd()
+    while cwd != "/":
+        path = os.path.join(cwd, ".git")
+        if os.path.exists(path):
+            root_dir = Path(path).parent.absolute()
+        cwd = os.path.dirname(cwd)
 
 from .Path import *
 

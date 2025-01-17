@@ -1,4 +1,5 @@
 import os
+import sys
 import base64
 import inspect
 import getpass
@@ -12,8 +13,17 @@ class Instance:
         """ Constructor """
         self.valid = True
         self.__validate_file(filename)
-        self.source = inspect.getsource(self.object)
-        self.binary = open(filename, "rb")
+        try:
+            self.source = inspect.getsource(self.object)
+        except AttributeError:
+            # There's already an invalid item warning thrown by validation,
+            # so just exit; also should throw an exit in __validate_file?
+            sys.exit()
+        try:
+            self.binary = open(filename, "rb")
+        except FileNotFoundError:
+            print(f"There doesn't appear to be even a single {filename} around!")
+            sys.exit()
         self.__enumerate_properties()
 
     def __validate_file(self, filename: str = "") -> None:
