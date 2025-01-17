@@ -1,35 +1,56 @@
 # Setting up Whorl-Client
 
-## Prerequisites 
-1. Clone the client repository 
-
-    ```sh
-    git clone git@github.com:allegheny-college-cmpsc-404-spring-2025/whorl-client.git
-    ``` 
-
-2. Setup a virtual environment 
-
-    here you work to utilize `venv` short for virtual environment specific for your client. 
-
-    ```sh
-    python -m venv .venv
-    ``` 
-    then run this next command 
-    Source .venv/bin/activate
-    ```
-    PSA - your virtual environment will stay open so when finish run comand 'deactivate'
-
-3. once your virtual environment is finished being set up perform a development install python -m pip install -e 
-
-4. The client repository requires .env files using dotenv.org to manage our files you will need to have nodejs instaalled to your machine and you will download it using the npx command 
-
-    https://nodejs.org/en/download 
-
-5. lastly you will need to access the client through your machine and access the main folder then you will run npx dotenv-vault@latest pull
-
-# Testing whorl-client locally
-
 ## Prerequisites
+
+### Clone the client repository
+
+```sh
+git clone git@github.com:allegheny-college-cmpsc-404-spring-2025/whorl-client.git
+```
+
+### Setup a virtual environment
+
+Here you work to utilize `venv` which is short for virtual environment specific for your client.
+
+Create a virtual environment in the root of the `whorl-client` repository by running the command below.
+
+```sh
+python -m venv .venv
+```
+
+Then activate your virtual environment
+
+```sh
+source .venv/bin/activate
+```
+
+PSA - your virtual environment will stay open so when finished run command `deactivate` to close it.
+
+### Development Install
+
+Once your virtual environment is set up, perform a development install by running the command below
+
+```sh
+python -m pip install -e .
+```
+
+### Install Node.js and Manage Environment Variables
+
+The client repository requires `.env` files using `dotenv.org` to manage our files. You will need to have Node.js installed on your machine, which you can download using the npx command. You can follow the link below to download Node.js to your machine.
+
+[Download Node.js](https://nodejs.org/en/download)
+
+### Pull Latest Changes
+
+Lastly, pull from the `whorl-client` repository again if you have cloned it and cd to the main folder and run the command:
+
+```sh
+npx dotenv-vault@latest pull
+```
+
+## Testing whorl-client locally
+
+### Requirements
 
 1. Clone the Repository:
 
@@ -41,7 +62,7 @@
 
     Utilize the `venv` of your whorl-client project to run the following commands (use the repository of `whorl-client` and cd to `starship-assignment`).
 
-## Collect Required Items
+### Collect Required Items
 
 You will need to move between directories ("rooms") to collect specific Python files, which will act as "items" in your inventory.
 
@@ -59,7 +80,7 @@ get FILENAME.py
 
 Use the `inventory` command to check your collected items.
 
-## Start the Engine
+### Start the Engine
 
 Once you have all the required files in your inventory, navigate to the `engine-room` directory and run the engine:
 
@@ -67,7 +88,7 @@ Once you have all the required files in your inventory, navigate to the `engine-
 ./Engine
 ```
 
-## Verify the Engine Status
+### Verify the Engine Status
 
 If the engine starts successfully, proceed to the `bridge` directory and run:
 
@@ -77,13 +98,13 @@ If the engine starts successfully, proceed to the `bridge` directory and run:
 
 This should confirm that the engine has started.
 
-## Example Walkthrough
+### Example Walkthrough
 
 - **Navigate to Rooms:** Use `cd` to move between directories and collect the required files.
 - **Check Inventory:** Periodically verify your inventory to ensure you have all the necessary items.
 - **Start and Verify:** Follow the steps above to start the engine and confirm it through the controls.
 
-## Notes
+### Notes
 
 - Each file must be explicitly collected by typing `get FILENAME.py` in the appropriate directory.
 - The sequence of operations matters: ensure you have all items before starting the engine.
