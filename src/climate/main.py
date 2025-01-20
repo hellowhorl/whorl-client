@@ -36,11 +36,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def main():
-    """Display the weather report.
-    :raises EnvironmentError: If the required environment variables `API_URL` or `API_PORT` are not set.
-    :raises requests.exceptions.RequestException: If the API request fails.
-    :raises KeyError: If required fields (e.g., `weather`, `main`, or `clouds`) are missing in the API response.
-    :return: Displays a formatted weather report table in the console.
+    """
+    Display the weather report from the climate API endpoint.
+
+    :raises EnvironmentError: If the required environment variables API_URL or API_PORT are not set
+    :raises requests.exceptions.RequestException: If the API request fails
+    :raises KeyError: If required fields (weather, main, or clouds) are missing in the API response
+    :return: None - Displays a formatted weather report table in the console
     :rtype: None
     """
     # Define api_url and port variables

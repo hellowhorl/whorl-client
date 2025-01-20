@@ -10,9 +10,9 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../../src'))
 
-project = 'clientdocs'
-copyright = '2025, Preston'
-author = 'Preston'
+project = 'hello-whorl'
+copyright = '2025 hello-whorl'
+author = 'Preston Smith, Aidan Dyga, Rebekah Rudd, Jason Gyamafi'
 release = '1'
 
 # -- General configuration ---------------------------------------------------
