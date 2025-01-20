@@ -6,10 +6,10 @@
 Client API
 ========================
 
-.. automodule:: climate.main
-   :members:
-
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+
+   climate
+   config
+
 
