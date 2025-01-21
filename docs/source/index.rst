@@ -10,6 +10,7 @@ Client API
    :maxdepth: 2
 
    climate
-   config
+   gitit
+   inventory
 
 
