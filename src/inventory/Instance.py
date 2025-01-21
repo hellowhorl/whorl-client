@@ -8,9 +8,33 @@ import importlib
 from .specs import ItemSpec
 
 class Instance:
+    """A class to handle item instances in the inventory system.
+
+    This class validates, loads and processes item files before they are added
+    to the inventory system. It handles file validation, property enumeration,
+    and preparation of item data for transmission to the API.
+
+    Attributes:
+        valid (bool): Whether the item file is valid
+        name (str): Name of the item module
+        object (module): Loaded Python module for the item
+        mod (class): Item class from the module
+        source (str): Source code of the item class
+        binary (file): Binary file handle for the item
+        transmit (dict): Dictionary of item properties for API transmission
+    """
 
     def __init__(self, filename: str = ""):
-        """ Constructor """
+        """Initialize an item instance from a file.
+
+        Args:
+            filename (str, optional): Path to item file. Defaults to empty string.
+
+        Raises:
+            SystemExit: If file validation fails or file not found
+            AttributeError: If item module cannot be loaded
+            FileNotFoundError: If item file does not exist
+        """
         self.valid = True
         self.__validate_file(filename)
         try:
@@ -27,7 +51,16 @@ class Instance:
         self.__enumerate_properties()
 
     def __validate_file(self, filename: str = "") -> None:
-        """ Validates aspects of a file """
+        """Validate an item file by checking module structure and inheritance.
+
+        Args:
+            filename (str, optional): Name of file to validate. Defaults to empty string.
+
+        Raises:
+            Exception: If file does not meet item specification requirements
+            ImportError: If module cannot be imported
+            AttributeError: If required attributes are missing
+        """
         try:
             # Split name into module name; system rules dictate
             # that enclosing files and classes share the same name
@@ -46,6 +79,14 @@ class Instance:
             self.valid = False
 
     def __enumerate_properties(self) -> None:
+        """Enumerate and collect item properties for API transmission.
+
+        Collects item properties and maps them to API field names, creating
+        a dictionary ready for transmission to the inventory API.
+
+        Note:
+            Properties are mapped according to to_transmit dictionary
+        """
         self.transmit = {
             "item_owner": os.getenv("GITHUB_USER") or getpass.getuser(),
             "item_qty": 1,
