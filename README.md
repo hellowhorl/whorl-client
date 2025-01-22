@@ -125,3 +125,24 @@ This section explains the function of different commands along with their inputs
 - `info` : This command will give info about an item in your inventory. You can only view the info of an item that is already in your inventory. To run: `info ItemInInventory`.
 - `drop` : This command removes an item from your inventory. To run: `drop ItemInInventory`. It will give you an output of a dictionary to show it is working.
 
+# Behind the Scenes
+This section explains how each API works.
+
+## Climate API
+The climate API is run using the command climate. The climate API uses api_url and api_port to get a dictionary of information about the climate but this file mainly just takes that dictionary and manipulates it. First, there is a function that will change the temperature value from Kelvin to Celsius or Fahrenheit. Then the code makes a table using the Rich Python program.
+
+
+## Persona API
+This API allows a user to talk to an AI chat bot and to look at objects. Looking at an object calls a file with the object information. If there is nothing the Look.py program will return a string indicating that there is no information.
+
+
+## Narrator API
+Narrator API includes four different files: Checkpoint.py, Narrator.py, Path.py, and Question.py. Narrator pulls its information from a .yml in order to know what scene the user is in. When a user `cd`s into different folders flags will be dropped. This allows the grader for the assignment to see if the user has completed the required assignment and cded into all the different folders. Checkpoint.py is the file where flags are dropped. Narrator.py accesses and reads the yaml file. Path.py changes scenes for the user. Question.py interacts with the user and gives them different questions to answer.
+
+
+## Omnipresence API
+This API allows the user to interact with itself and know who is using the program. Omnipresence includes the commands who and presence. who alerts the users to who is using the program and it gives an output like: Users active in /home/student/whorl-client: 🧙 student. While presence won’t give an output but alerts the computer to the users location. `who` calls the omnipresence file and gets the user information and returns that to the user. This shows the location of the user at every turn they take. Presence automatically reports where people are.
+
+
+## Inventory API
+This API has the most commands out of any of the other API folders. This API allows the user to access their inventory and with the different commands they can add to the inventory, see the info of their objects, remove items, use the items and give items away. Each of these actions are defined in a python file committed to that action.
