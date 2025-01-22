@@ -110,3 +110,18 @@ This should confirm that the engine has started.
 - The sequence of operations matters: ensure you have all items before starting the engine.
 
 By following these steps, you can confirm that the whorl-client functions as intended!
+
+# Commands
+This section explains the function of different commands along with their inputs.
+
+- `who` : This command tells the user who is active in the world. To run: `who`.
+- `talk` : This command talks to an object and allows the user to access an open AI chat bot. To run: `talk`.
+- `look` : This command takes as input the name of an object and it returns a string that will tell you what the object looks like. To run: `look ObjectName`.
+- `presence` : This command allows the program to know that the user is in the file system. To run: `presence`.
+- `inventory` : This command will pull up all the items in the user's inventory. If there are no inventory items the table will just appear to be blank. To run: `inventory`.
+- `get` : A user will use this command to pick up an object that they find and add it to the inventory. To run: `get File.py` and it will then add File.py to the inventory.
+- `use` : This command will tell the user if the inventory item has a use or not. To run: `use ItemInInventory`.
+- `give` : This command allows transfer of objects between users. The format of this command is `give ItemInInventory username`.
+- `info` : This command will give info about an item in your inventory. You can only view the info of an item that is already in your inventory. To run: `info ItemInInventory`.
+- `drop` : This command removes an item from your inventory. To run: `drop ItemInInventory`. It will give you an output of a dictionary to show it is working.
+
