@@ -10,20 +10,6 @@ class Narrator:
 
     :param path_file: path to yaml file narrator should use to display appropriate responses, defaults to .paths.yml
     :type path_file: str(Optional)
-    ...
-
-
-    The First number is the act number and then the numbers nested in the act numbers are the scene numbers of that act.
-
-    Example of Input
-    .. code-block::yaml
-        0:
-            0:
-                - Hello how's it going
-        1:
-            0:
-                - Go away
-
     """
 
     def __init__(self, path_file: str = ".paths.yml"):
@@ -42,7 +28,9 @@ class Narrator:
 
     def narrate(self, **kwargs):
         """Narrate the text in the classes associated yaml based on the current act and scene specified.
-        :param **kwargs:
+
+        :param **kwargs: Used to specify if all scenes should be played or if specific the scene and act numbers to be displayed.
+        :type **kwargs: dict[str,Any]
         """
         lines = []
         acts = list(self.paths)
