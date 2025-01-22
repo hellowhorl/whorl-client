@@ -12,5 +12,6 @@ Client API
    climate
    gitit
    inventory
+   narrator
 
 
