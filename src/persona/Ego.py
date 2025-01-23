@@ -10,8 +10,24 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Ego:
+    """A class to create Persona's who are created personas in the current world.
+    
+    This class queries the persona API to create persona's and access a ChatGPT
+    bot and to record a history and talk to other users. 
+    
+    Attributes:
+        addressee (str): Current username from GITHUB_USER env var or gets the user
+        archetype (str): Archetype defines a Persona and needs to exist for the Persona to be created        
+        named (str): This is the name of the Persona that has been created
+        chatterbox (bool): This is set to False and access the ChatGPT chat box
+        is_registered (str): This confirms that the Persona exists and if it does it returns 200
+    """
 
     def __init__(self, type: str = "", name: str = "", mode="talk"):
+        """Initialize Ego instance with current directory and user info.
+        
+        Defines a Persona and gather's information about the user.
+        """
         self.addressee = os.getenv('GITHUB_USER') or getpass.getuser()
         self.archetype = type
         self.named = name or type
@@ -24,10 +40,23 @@ class Ego:
             sys.exit(0)
 
     def __str__(self):
+        """Query the persona API to see if there is a object description.
+        
+        This uses the Look Class to see if there is a description of 
+        an object.
+        
+        Returns:
+            str: description of an object
+        """
         reference = self.named or self.archetype
         return f"""You look at {reference}. {reference} looks back. It's awkward."""
 
     def __send_message(self, console, msg: str = ""):
+        """Query the persona API to see if there is a message to be sent and saved.
+        
+        This uses the talk function to access the ChatGPT chat bot and store functions 
+        in the server.
+        """
         content = requests.post(
             f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/persona/generate/{self.archetype}",
             data={
@@ -36,9 +65,8 @@ class Ego:
             },
             stream=True
         )
-
         response_text = content.json()["response"].strip()
-        attachments = content.json()["attachments"]
+        # attachments = content.json()["attachments"]
         # TODO: Decide what to do with attachments?
         console.print(Markdown(response_text))
 
@@ -75,6 +103,16 @@ class Ego:
     """
 
     def behave(self):
+
+        """Query the persona API to count messages and send them.
+        
+        This uses the Talk Class to see is a message count and therefore
+        messages to send and to be sent. If there is a message count the 
+        program will continue to run.
+        
+        Returns:
+            None: makes changes in whole message count is define internally
+        """
         console = Console()
         if self.chatterbox:
             self.__send_message(console, "")
