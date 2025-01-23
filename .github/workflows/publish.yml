@@ -1,0 +1,23 @@
+name: Publish API Docs
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v4.1.7
+          if: always()
+        - name: Setup Python
+          uses: actions/setup-python@v5.1.1
+          with:
+            python-version: 3.12
+        - name: Set up environment
+          run: |
+            sudo apt-get update
+            sudo apt-get install --only-upgrade python3-pip
+            sudo python -m pip install -r docs/requiremnts.txt
+            
