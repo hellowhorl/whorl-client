@@ -30,3 +30,26 @@ language = 'python'
 
 html_theme = 'furo'
 html_static_path = ['_static']
+html_theme_options = {
+    "light_css_variables": {
+        # Background colors
+        "color-background-primary": "#262932",  # Main content background
+        "color-background-secondary": "#262932", # Sidebar background
+        
+        # Text colors
+        "color-foreground-primary": "#ffffff", # Main text color
+        "color-foreground-secondary": "#e0b027", # Secondary text color
+        
+        # Link colors
+        "color-brand-primary": "#e69824", # Primary brand color
+        "color-brand-content": "#e69824", # Link color
+        
+        # Sidebar colors
+        "color-sidebar-link-text": "#e0b027", # Sidebar link color
+        "color-sidebar-link-text--top-level": "#e69824", # Top level sidebar links
+        
+        # API/Code colors
+        "color-api-name": "#e69824", # Function names
+        "color-api-pre-name": "#e69824", # Class/module names
+    },
+}
