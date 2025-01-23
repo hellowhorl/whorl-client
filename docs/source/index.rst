@@ -13,5 +13,6 @@ Client API
    gitit
    inventory
    narrator
+   omnipresence
 
 
