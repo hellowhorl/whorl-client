@@ -27,6 +27,9 @@ class ItemSpec:
 
         Args:
             filename (str): Path to the item's source file
+
+        Note:
+            Extracts modname from filename and sets CLI flags
         """
         self.filename = filename
         self.modname = filename.split(".")[0]
@@ -35,14 +38,14 @@ class ItemSpec:
 
     def __set_cli_flags(self):
         """Parse command line arguments and set them as object attributes.
-        
-        Extracts flags from sys.argv using regex pattern matching. Supports both
-        single (-) and double (--) dash flags. Flag values become attributes of
-        the instance.
+    
+        Extracts command line flags using regex pattern matching and sets them
+        as instance attributes. Supports both single (-) and double dash (--)
+        flag formats.
 
         Example:
-            For argv: ["--flag", "value"]
-            Creates: self.flag = "value"
+            With sys.argv = ["script.py", "--flag", "value"]
+            Results in: self.flag = "value"
         """
         flags = re.findall(
             r"((?<![a-z])-{1,2}[a-z0-9]+)(?:\s)([a-zA-Z0-9_]+)?",
@@ -64,7 +67,7 @@ class ItemSpec:
         """Attempt to use the item.
         
         Args:
-            **kwargs: Arbitrary keyword arguments for item usage
+            kwargs: Arbitrary keyword arguments for item usage
 
         Returns:
             None: Prints a generic usage message
