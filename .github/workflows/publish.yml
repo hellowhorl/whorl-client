@@ -20,4 +20,23 @@ jobs:
             sudo apt-get update
             sudo apt-get install --only-upgrade python3-pip
             sudo python -m pip install -r docs/requiremnts.txt
-            
+        - name: Create release
+          id: create_release
+          uses: actions/create-release@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            tag_name: v1.0.0
+            release_name: API Documentation Release v1.0.0
+            draft: false
+            prerelease: false
+        - name: Upload released asset
+          id: upload-release-asset
+          uses: actions/upload-release-asset@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: _site/thesis/index.pdf
+            asset_name: SeniorThesis.pdf
+            asset_content_type: pdf
