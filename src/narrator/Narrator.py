@@ -29,8 +29,8 @@ class Narrator:
     def narrate(self, **kwargs):
         """Narrate the text in the classes associated yaml based on the current act and scene specified.
 
-        :param **kwargs: Used to specify if all scenes should be played or if specific the scene and act numbers to be displayed.
-        :type **kwargs: dict[str,Any]
+        :param kwargs: Used to specify if all scenes should be played or if specific the scene and act numbers to be displayed.
+        :type kwargs: dict[str,Any]
         """
         lines = []
         acts = list(self.paths)
