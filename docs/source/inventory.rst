@@ -2,17 +2,17 @@ Inventory
 ========================
 
 Main Functions
--------------
+--------------
 .. automodule:: inventory.main
    :members:
 
 Item Instance
-------------
+-------------
 .. automodule:: inventory.Instance
    :members:
 
 Acquisition
-----------
+-----------
 .. automodule:: inventory.Acquire
    :members:
 
@@ -32,11 +32,11 @@ Use
    :members:
 
 Exceptions
----------
+----------
 .. automodule:: inventory.Exceptions
    :members:
 
 Item Specification
-----------------
+------------------
 .. automodule:: inventory.specs.ItemSpec
    :members:
