@@ -30,13 +30,13 @@ jobs:
             release_name: API Documentation Release v1.0.0
             draft: false
             prerelease: false
-    #    - name: Upload released asset
-    #      id: upload-release-asset
-    #      uses: actions/upload-release-asset@v1
-    #      env:
-    #        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #      with:
-    #        upload_url: ${{ steps.create_release.outputs.upload_url }}
-    #        asset_path: _site/thesis/index.pdf
-    #        asset_name: SeniorThesis.pdf
-    #        asset_content_type: pdf
+        - name: Upload released asset
+          id: upload-release-asset
+          uses: actions/upload-release-asset@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: build/index.html
+            asset_name: API_Documentation.html
+            asset_content_type: text/html
