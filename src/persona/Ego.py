@@ -10,21 +10,21 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Ego:
-    """A class to create Persona's who are created personas in the current world.
+    """A class to create Persona's who are have different abilities and the world.
     
-    This class queries the persona API to create persona's and access a ChatGPT
-    bot and to record a history and talk to other users. 
+    This class queries the persona API to create personas and access a chat
+    bot and to record a history of the conversation and to look at each other. 
     
     Attributes:
         addressee (str): Current username from GITHUB_USER env var or gets the user
         archetype (str): Archetype defines a Persona and needs to exist for the Persona to be created        
         named (str): This is the name of the Persona that has been created
-        chatterbox (bool): This is set to False and access the ChatGPT chat box
+        chatterbox (bool): If this is False the user starts the conversation. If it is True, the persona starts the conversation.
         is_registered (str): This confirms that the Persona exists and if it does it returns 200
     """
 
     def __init__(self, type: str = "", name: str = "", mode="talk"):
-        """Initialize Ego instance with current directory and user info.
+        """Initialize an Ego instance with current directory and user info.
         
         Defines a Persona and gather's information about the user.
         """
@@ -104,14 +104,14 @@ class Ego:
 
     def behave(self):
 
-        """Query the persona API to count messages and send them.
+        """Query the persona API to count messages and sends them.
         
-        This uses the Talk Class to see is a message count and therefore
-        messages to send and to be sent. If there is a message count the 
+        There is a message count and therefore and chatterbox determines if
+        the user or the persona will initiate the conversation.If there is a message count the 
         program will continue to run.
         
         Returns:
-            None: makes changes in whole message count is define internally
+            None: this program makes changes in whole message count is defined internally
         """
         console = Console()
         if self.chatterbox:

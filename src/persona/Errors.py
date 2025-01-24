@@ -8,8 +8,8 @@ class NotHereError(Exception):
     it using the *args and *kwargs.
     
     Attributes:
-        args (??): ??
-        kwargs (??): ??
+        args (str): Non-Keyword Arguments
+        kwargs (str): Keyword Arguments
     """
     
     def __init__(self, *args, **kwargs):

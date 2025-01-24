@@ -7,14 +7,13 @@ from rich.console import Console
 from rich.markdown import Markdown
 
 class Look:
-
     """A class to look at the descriptions of objects.
     
     This class gets the description of objects and returns 
     to the user what an object looks like.
     
     Attributes:
-        filename (str): Define a path to a file.
+        filename (str): define a path to a file
     """
 
     def __init__(self, filename: str = ""):
@@ -48,12 +47,6 @@ def cmd():
     
     Creates an instance of the Ego class which automatically access Look 
     and see if there is an object description.
-    
-    Returns:
-        ??
-        
-    Example:
-        TODO
     """
 
     sys.path.append(os.path.expanduser(os.getcwd()))
