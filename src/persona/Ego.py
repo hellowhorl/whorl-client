@@ -15,19 +15,17 @@ class Ego:
     This class queries the persona API to create personas and access a chat
     bot and to record a history of the conversation and to look at each other. 
     
-    Attributes:
-        addressee (str): Current username from GITHUB_USER env var or gets the user
-        archetype (str): Archetype defines a Persona and needs to exist for the Persona to be created        
-        named (str): This is the name of the Persona that has been created
-        chatterbox (bool): If this is False the user starts the conversation. If it is True, the persona starts the conversation.
-        is_registered (str): This confirms that the Persona exists and if it does it returns 200
+    :param type: This is the Persona type.
+    :type type: str(Optional)
+
+    :param name: This is the Persona name. It is often accessed internally for example "__name__"
+    :type name: str(Optional)
+
+    :param mode: This only option for mode right now is talk. This will let the program run the behave() function
+    :type mode: str(Optional)
     """
 
     def __init__(self, type: str = "", name: str = "", mode="talk"):
-        """Initialize an Ego instance with current directory and user info.
-        
-        Defines a Persona and gather's information about the user.
-        """
         self.addressee = os.getenv('GITHUB_USER') or getpass.getuser()
         self.archetype = type
         self.named = name or type
@@ -42,11 +40,16 @@ class Ego:
     def __str__(self):
         """Query the persona API to see if there is a object description.
         
-        This uses the Look Class to see if there is a description of 
+        This uses the command `look Persona_name` to see if there is a description of 
         an object.
         
-        Returns:
-            str: description of an object
+        :return: description of the Persona that is defined in the __str__ of the Persona
+        :rtype: str
+
+        Example:
+            if Persona is not there -->  "▌ Persona_name doesn't seem to be present at the moment..."
+            if Person is there --> "▌ You look at Persona_name. Persona_name looks back. It's awkward."                
+ 
         """
         reference = self.named or self.archetype
         return f"""You look at {reference}. {reference} looks back. It's awkward."""
@@ -54,8 +57,16 @@ class Ego:
     def __send_message(self, console, msg: str = ""):
         """Query the persona API to see if there is a message to be sent and saved.
         
-        This uses the talk function to access the ChatGPT chat bot and store functions 
-        in the server.
+        This uses the command `talk Persona_name` function to access the ChatGPT chat bot and store conversations 
+        in the server and return the servers responses.
+
+        :param console: Used to print in the terminal
+        :type console: class[rich.console.Console]
+
+        :param msg: This is the message strings that is given to the chat bot.
+        :type msg: str
+
+        :return: None. If the user types 'goodbye' in the chat the chat will end
         """
         content = requests.post(
             f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/persona/generate/{self.archetype}",
@@ -66,7 +77,7 @@ class Ego:
             stream=True
         )
         response_text = content.json()["response"].strip()
-        # attachments = content.json()["attachments"]
+        attachments = content.json()["attachments"]
         # TODO: Decide what to do with attachments?
         console.print(Markdown(response_text))
 
@@ -103,16 +114,17 @@ class Ego:
     """
 
     def behave(self):
-
         """Query the persona API to count messages and sends them.
         
         There is a message count and therefore and chatterbox determines if
         the user or the persona will initiate the conversation.If there is a message count the 
         program will continue to run.
         
-        Returns:
-            None: this program makes changes in whole message count is defined internally
+        :params self: No params
+
+        :return: None: this program makes changes in whole message count is defined internally
         """
+
         console = Console()
         if self.chatterbox:
             self.__send_message(console, "")
