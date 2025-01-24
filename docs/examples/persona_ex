@@ -1,0 +1,6 @@
+from persona.Ego import Ego
+
+
+class Casper(Ego):
+    def __init__(self, mode: str = "talk"):
+        super().__init__("Ghost", name=__name__, mode=mode)
