@@ -14,5 +14,6 @@ Client API
    inventory
    narrator
    omnipresence
+   persona
 
 
