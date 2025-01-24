@@ -8,14 +8,20 @@ from rich.markdown import Markdown
 
 from .Errors import NotHereError, NotAnEgo
 
+
 class Talk:
+    """Class that allows you to talk to the personas.
+
+    :param persona: The name of the persona you want to talk too file must be in current directory.
+    :type persona: str
+    """
 
     def __init__(self, persona: str = ""):
         try:
             mod = types.ModuleType(persona)
             with open(persona, "r") as fh:
                 data = fh.read()
-            exec(data, mod.__dict__)
+            exec(data, mod)
             getattr(mod, persona)()
         except NotAnEgo:
             console = Console()
@@ -23,9 +29,8 @@ class Talk:
         except Exception as e:
             console = Console()
             block = f"> You try to talk to {persona}, but they're not here!"
-            console.print(
-                Markdown(block)
-            )
+            console.print(Markdown(block))
+
 
 def cmd():
     sys.path.append(os.path.expanduser(os.getcwd()))
