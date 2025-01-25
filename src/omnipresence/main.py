@@ -10,11 +10,12 @@ load_dotenv()
 def get():
     """Get current user's presence record from API.
     
-    Returns:
-        dict: API response containing user presence data
-        
-    Raises:
-        requests.exceptions.RequestException: If API request fails
+    Makes a GET request to the omnipresence API endpoint to retrieve the 
+    presence data for the currently authenticated user.
+
+    :return: API response containing user presence data
+    :rtype: dict
+    :raises requests.exceptions.RequestException: If the API request fails
     """
     response = requests.get(
         f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence",
@@ -27,11 +28,13 @@ def get():
 def post():
     """Create new presence record for current user.
     
-    Returns:
-        bool: True if record created successfully, False otherwise
-        
-    Raises:
-        requests.exceptions.RequestException: If API request fails
+    Posts a new presence record to the omnipresence API for the currently 
+    authenticated user with their current status.
+
+    :param None: No parameters required
+    :return: Success status of the operation
+    :rtype: bool
+    :raises requests.exceptions.RequestException: If the API request fails
     """
     response = requests.post(
         f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence/",
@@ -47,16 +50,16 @@ def post():
 
 def patch(data: dict = {}):
     """Update existing presence record.
-
-    Args:
-        data (dict): Record data containing pk and charname
     
-    Returns:
-        bool: True if update successful, False otherwise
-        
-    Raises:
-        requests.exceptions.RequestException: If API request fails
-        KeyError: If required data fields missing
+    Updates an existing presence record in the omnipresence API with new data
+    including the current working directory.
+
+    :param data: Record data containing pk and charname
+    :type data: dict
+    :return: True if update successful, False otherwise
+    :rtype: bool
+    :raises requests.exceptions.RequestException: If API request fails
+    :raises KeyError: If required data fields missing
     """
     response = requests.patch(
         f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence/update/{data['pk']}/",
@@ -75,12 +78,10 @@ def report():
     
     Gets current presence data and either updates existing record
     or creates new record if none exists.
-    
-    Returns:
-        None
-        
-    Raises:
-        requests.exceptions.RequestException: If API requests fail
+
+    :return: None
+    :rtype: None
+    :raises requests.exceptions.RequestException: If API requests fail
     """
     data = get()
     if len(data) == 1:

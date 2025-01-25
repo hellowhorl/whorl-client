@@ -14,17 +14,22 @@ class Who:
     
     This class queries the omnipresence API to get a list of users active in the 
     current directory and displays them in a formatted list.
-    
-    Attributes:
-        cwd (str): Current working directory path
-        user (str): Current username from GITHUB_USER env var or system username
+
+    :ivar cwd: Current working directory path
+    :type cwd: str
+    :ivar user: Current username from GITHUB_USER env var or system username
+    :type user: str
     """
+
 
     def __init__(self):
         """Initialize Who instance with current directory and user info.
         
         Gets current directory path and username, then retrieves and displays
         the list of active users.
+
+        :return: None
+        :rtype: None
         """
         self.cwd = os.getcwd()
         self.user = os.getenv('GITHUB_USER') or getpass.getuser()
@@ -37,11 +42,9 @@ class Who:
         Makes a POST request to the API endpoint with the current directory path
         to get list of active users.
         
-        Returns:
-            list: List of user records from API response JSON
-            
-        Raises:
-            requests.exceptions.RequestException: If the API request fails
+        :return: List of user records from API response JSON
+        :rtype: list
+        :raises requests.exceptions.RequestException: If the API request fails
         """
         actives = requests.post(
             f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence/local/",
@@ -57,14 +60,13 @@ class Who:
         Formats and prints a markdown-style message showing active users
         in the current working directory. Uses Rich console for styled output.
         
-        Args:
-            user_list (list, optional): List of user records containing 'charname' keys.
-                Defaults to empty list.
-                
-        Returns:
-            None
-            
-        Example:
+        :param user_list: List of user records containing 'charname' keys
+        :type user_list: list, optional
+        :return: None
+        :rtype: None
+        
+        **Example**::
+        
             With users:
                 > Users active in **/path/to/dir**: `🧙 user1`, `🧙 user2`
             
@@ -85,10 +87,11 @@ def cmd():
     Creates an instance of Who class which automatically queries and displays
     active users in current directory.
     
-    Returns:
-        None
-        
-    Example:
+    :return: None
+    :rtype: None
+    
+    **Example**::
+    
         $ python -m omnipresence.who
         > Users active in **/current/dir**: `🧙 user1`
     """

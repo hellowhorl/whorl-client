@@ -11,7 +11,6 @@ class NotHereError(Exception):
         args (str): Non-Keyword Arguments
         kwargs (str): Keyword Arguments
     """
-    
     def __init__(self, *args, **kwargs):
         # console = Console()
         print(*args, **kwargs)
