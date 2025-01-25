@@ -16,13 +16,20 @@ class Acquisition:
 
     This class processes item acquisitions by validating files and transmitting them 
     to the inventory API endpoint.
-    """
 
+    :ivar sys.argv: Command line arguments containing files to process
+    :type sys.argv: list
+    """
     def __init__(self):
         """Initialize the acquisition process for multiple files.
         
         Processes all files provided as command line arguments, creating
         Instance objects and transmitting them to the API.
+        
+        :return: None
+        :rtype: None
+        :raises FileNotFoundError: If specified files don't exist
+        :raises requests.exceptions.RequestException: If API transmission fails
         """
         # Accommodate multiple files; acquire each serially
         for file in sys.argv[1:]:

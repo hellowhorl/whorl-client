@@ -16,17 +16,23 @@ class Usage:
 
     This class processes item usage by retrieving items from inventory,
     decoding their contents, and executing their use functionality.
+
+    :ivar item_name: Name of the item to use or inspect
+    :type item_name: str
+    :ivar source: Decoded source code of the item
+    :type source: str
     """
 
     def __init__(self, item_name: str = "", to_use: bool = True):
         """Initialize item usage process.
 
-        Args:
-            item_name (str, optional): Name of item to use. Defaults to empty string.
-            to_use (bool, optional): Whether to use or just inspect the item. Defaults to True.
-
-        Raises:
-            SystemExit: If item is not found in inventory
+        :param item_name: Name of item to use
+        :type item_name: str, optional
+        :param to_use: Whether to use or just inspect the item
+        :type to_use: bool, optional
+        :return: None
+        :rtype: None
+        :raises SystemExit: If item is not found in inventory
         """
         self.item_name = item_name
         item_record = self.__search_inventory()
@@ -42,14 +48,11 @@ class Usage:
     def __search_inventory(self, item_name: str = "") -> dict:
         """Search for an item in the user's inventory.
         
-        Args:
-            item_name (str, optional): Name of item to search for. Defaults to empty string.
-
-        Returns:
-            dict: Item record if found, empty dict if not found
-            
-        Raises:
-            requests.exceptions.RequestException: If the API request fails
+        :param item_name: Name of item to search for
+        :type item_name: str, optional
+        :return: Item record if found, empty dict if not found
+        :rtype: dict
+        :raises requests.exceptions.RequestException: If the API request fails
         """
         item = requests.post(
             f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/inventory/search/",

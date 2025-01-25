@@ -14,26 +14,32 @@ class Instance:
     to the inventory system. It handles file validation, property enumeration,
     and preparation of item data for transmission to the API.
 
-    Attributes:
-        valid (bool): Whether the item file is valid
-        name (str): Name of the item module
-        object (module): Loaded Python module for the item
-        mod (class): Item class from the module
-        source (str): Source code of the item class
-        binary (file): Binary file handle for the item
-        transmit (dict): Dictionary of item properties for API transmission
+    :ivar valid: Whether the item file is valid
+    :type valid: bool
+    :ivar name: Name of the item module
+    :type name: str
+    :ivar object: Loaded Python module for the item
+    :type object: module
+    :ivar mod: Item class from the module
+    :type mod: class
+    :ivar source: Source code of the item class
+    :type source: str
+    :ivar binary: Binary file handle for the item
+    :type binary: file
+    :ivar transmit: Dictionary of item properties for API transmission
+    :type transmit: dict
     """
 
     def __init__(self, filename: str = ""):
         """Initialize an item instance from a file.
 
-        Args:
-            filename (str, optional): Path to item file. Defaults to empty string.
-
-        Raises:
-            SystemExit: If file validation fails or file not found
-            AttributeError: If item module cannot be loaded
-            FileNotFoundError: If item file does not exist
+        :param filename: Path to item file
+        :type filename: str, optional
+        :return: None
+        :rtype: None
+        :raises SystemExit: If file validation fails or file not found
+        :raises AttributeError: If item module cannot be loaded
+        :raises FileNotFoundError: If item file does not exist
         """
         self.valid = True
         self.__validate_file(filename)
@@ -53,13 +59,13 @@ class Instance:
     def __validate_file(self, filename: str = "") -> None:
         """Validate an item file by checking module structure and inheritance.
 
-        Args:
-            filename (str, optional): Name of file to validate. Defaults to empty string.
-
-        Raises:
-            Exception: If file does not meet item specification requirements
-            ImportError: If module cannot be imported
-            AttributeError: If required attributes are missing
+        :param filename: Name of file to validate
+        :type filename: str, optional
+        :return: None
+        :rtype: None
+        :raises Exception: If file does not meet item specification requirements
+        :raises ImportError: If module cannot be imported
+        :raises AttributeError: If required attributes are missing
         """
         try:
             # Split name into module name; system rules dictate
@@ -84,7 +90,10 @@ class Instance:
         Collects item properties and maps them to API field names, creating
         a dictionary ready for transmission to the inventory API.
 
-        Note:
+        :return: None
+        :rtype: None
+        
+        **Note**:
             Properties are mapped according to to_transmit dictionary
         """
         self.transmit = {

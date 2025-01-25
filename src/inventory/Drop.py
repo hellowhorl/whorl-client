@@ -16,13 +16,18 @@ class Dropped:
 
     This class processes item drops by removing them from the inventory system
     and creating local files from the item data.
+    
+    :ivar item_names: List of items to be dropped from inventory
+    :type item_names: list
     """
 
     def __init__(self, item_names: list = []):
         """Initialize the drop process for multiple items.
-
-        Args:
-            item_names (list, optional): List of item names to drop. Defaults to empty list.
+        
+        :param item_names: List of item names to drop
+        :type item_names: list, optional
+        :return: None
+        :rtype: None
         """
         for item in item_names:
             self.__drop_item(item)
@@ -30,12 +35,12 @@ class Dropped:
     def __drop_item(self, item_name: str = "") -> None:
         """Drop a single item from inventory and create a local file.
 
-        Args:
-            item_name (str, optional): Name of item to drop. Defaults to empty string.
-
-        Raises:
-            requests.exceptions.RequestException: If the API request fails
-            IOError: If there are issues writing the file
+        :param item_name: Name of item to drop
+        :type item_name: str, optional
+        :return: None
+        :rtype: None
+        :raises requests.exceptions.RequestException: If the API request fails
+        :raises IOError: If there are issues writing the file
         """
         item_record = self.__search_inventory(item_name)
         item_binary = self.__convert_to_py_file(item_record['item_bytestring'])
@@ -53,14 +58,11 @@ class Dropped:
     def __search_inventory(self, item_name: str = "") -> dict:
         """Search for an item in the user's inventory.
 
-        Args:
-            item_name (str, optional): Name of item to search for. Defaults to empty string.
-
-        Returns:
-            dict: Item record if found
-
-        Raises:
-            requests.exceptions.RequestException: If the API request fails
+        :param item_name: Name of item to search for
+        :type item_name: str, optional
+        :return: Item record if found
+        :rtype: dict
+        :raises requests.exceptions.RequestException: If the API request fails
         """
         item = requests.post(
             f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/inventory/search/",
