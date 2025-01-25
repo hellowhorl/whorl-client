@@ -5,7 +5,7 @@ class NotHereError(Exception):
     """A class to alert the user that there is an Error.
     
     This class shows that there is an Error and throws
-    it using the *args and *kwargs.
+    it using the \*args and \*kwargs.
     
     Attributes:
         args (str): Non-Keyword Arguments
