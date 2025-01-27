@@ -111,38 +111,43 @@ This should confirm that the engine has started.
 
 By following these steps, you can confirm that the whorl-client functions as intended!
 
-# Commands
+## Commands
+
 This section explains the function of different commands along with their inputs.
 
-- `who` : This command tells the user who is active in the world. To run: `who`.
-- `talk` : This command talks to an object and allows the user to access an open AI chat bot. To run: `talk`.
-- `look` : This command takes as input the name of an object and it returns a string that will tell you what the object looks like. To run: `look ObjectName`.
-- `presence` : This command allows the program to know that the user is in the file system. To run: `presence`.
-- `inventory` : This command will pull up all the items in the user's inventory. If there are no inventory items the table will just appear to be blank. To run: `inventory`.
-- `get` : A user will use this command to pick up an object that they find and add it to the inventory. To run: `get File.py` and it will then add File.py to the inventory.
-- `use` : This command will tell the user if the inventory item has a use or not. To run: `use ItemInInventory`.
-- `give` : This command allows transfer of objects between users. The format of this command is `give ItemInInventory username`.
-- `info` : This command will give info about an item in your inventory. You can only view the info of an item that is already in your inventory. To run: `info ItemInInventory`.
-- `drop` : This command removes an item from your inventory. To run: `drop ItemInInventory`. It will give you an output of a dictionary to show it is working.
+| **Command**   | **Description**                                                                                                                                              | **Usage Example**                |
+|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------|
+| `who`         | Displays who is active in the world.                                                                                                                         | `who`                             |
+| `talk`        | Talks to an object and allows the user to access an OpenAI chatbot.                                                                                          | `talk`                            |
+| `look`        | Takes the name of an object as input and returns a description of what the object looks like.                                                                | `look ObjectName`                 |
+| `presence`    | Indicates that the user is in the file system.                                                                                                               | `presence`                        |
+| `inventory`   | Displays all the items in the user's inventory. If there are no items, the table will appear blank.                                                          | `inventory`                       |
+| `get`         | Adds an object to the inventory.                                                                                                                             | `get File.py`                     |
+| `use`         | Checks if an inventory item has a use.                                                                                                                       | `use ItemInInventory`             |
+| `give`        | Transfers an object to another user.                                                                                                                         | `give ItemInInventory username`   |
+| `info`        | Provides information about an item in your inventory. This command can only be used for items already in the inventory.                                      | `info ItemInInventory`            |
+| `drop`        | Removes an item from the inventory and outputs a dictionary to confirm its functionality.                                                                    | `drop ItemInInventory`            |
 
-# Behind the Scenes
+## Behind the Scenes
+
 This section explains how each API works.
 
 ## Climate API
+
 The climate API is run using the command climate. The climate API uses api_url and api_port to get a dictionary of information about the climate but this file mainly just takes that dictionary and manipulates it. First, there is a function that will change the temperature value from Kelvin to Celsius or Fahrenheit. Then the code makes a table using the Rich Python program.
 
-
 ## Persona API
+
 This API allows a user to talk to an AI chat bot and to look at objects. Looking at an object calls a file with the object information. If there is nothing the Look.py program will return a string indicating that there is no information.
 
-
 ## Narrator API
+
 Narrator API includes four different files: Checkpoint.py, Narrator.py, Path.py, and Question.py. Narrator pulls its information from a .yml in order to know what scene the user is in. When a user `cd`s into different folders flags will be dropped. This allows the grader for the assignment to see if the user has completed the required assignment and cded into all the different folders. Checkpoint.py is the file where flags are dropped. Narrator.py accesses and reads the yaml file. Path.py changes scenes for the user. Question.py interacts with the user and gives them different questions to answer.
 
-
 ## Omnipresence API
+
 This API allows the user to interact with itself and know who is using the program. Omnipresence includes the commands who and presence. who alerts the users to who is using the program and it gives an output like: Users active in /home/student/whorl-client: 🧙 student. While presence won’t give an output but alerts the computer to the users location. `who` calls the omnipresence file and gets the user information and returns that to the user. This shows the location of the user at every turn they take. Presence automatically reports where people are.
 
-
 ## Inventory API
+
 This API has the most commands out of any of the other API folders. This API allows the user to access their inventory and with the different commands they can add to the inventory, see the info of their objects, remove items, use the items and give items away. Each of these actions are defined in a python file committed to that action.
