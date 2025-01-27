@@ -33,7 +33,12 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          title: ${{ github.ref}}
+          title: ${{ github.ref_name}}
+      - name: Upload rendered docs
+        uses: actions/upload-pages-artifact@v3.0.1
+        with:
+          path: ./docs/build
+        if: always()
   deploy-docs:
     environment:
       name: github-pages
