@@ -41,15 +41,18 @@ html_theme_options = {
         "color-foreground-secondary": "#e0b027", # Secondary text color
         
         # Link colors
-        "color-brand-primary": "#e69824", # Primary brand color
-        "color-brand-content": "#e69824", # Link color
+        "color-brand-primary": "#e2ad2b", # Primary brand color
+        "color-brand-content": "#e2ad2b", # Link color
+        "color-link": "#e2ad2b", # Normal links
+        "color-link-hover": "#e0b027", # Hover state
+        "color-link-visited": "#e2ad2b", # Visited links
         
         # Sidebar colors
         "color-sidebar-link-text": "#e0b027", # Sidebar link color
-        "color-sidebar-link-text--top-level": "#e69824", # Top level sidebar links
+        "color-sidebar-link-text--top-level": "#e2ad2b", # Top level sidebar links
         
         # API/Code colors
-        "color-api-name": "#e69824", # Function names
-        "color-api-pre-name": "#e69824", # Class/module names
+        "color-api-name": "#e2ad2b", # Function names
+        "color-api-pre-name": "#e2ad2b", # Class/module names
     },
 }
