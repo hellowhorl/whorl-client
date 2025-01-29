@@ -23,6 +23,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install --only-upgrade python3-pip
+          sudo python -m pip install -e .
           sudo python -m pip install -r docs/requirements.txt
           cd docs && make html
       - name: Setup Pages
@@ -37,7 +38,7 @@ jobs:
       - name: Upload rendered docs
         uses: actions/upload-pages-artifact@v3.0.1
         with:
-          path: ./docs/build
+          path: ./docs/build/html
         if: always()
   deploy-docs:
     environment:
