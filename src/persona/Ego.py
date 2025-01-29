@@ -10,6 +10,20 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Ego:
+    """A class to create Persona's who are have different abilities and the world.
+    
+    This class queries the persona API to create personas and access a chat
+    bot and to record a history of the conversation and to look at each other. 
+    
+    :param type: This is the Persona type.
+    :type type: str(Optional)
+
+    :param name: This is the Persona name. It is often accessed internally for example "__name__"
+    :type name: str(Optional)
+
+    :param mode: This only option for mode right now is talk. This will let the program run the behave() function
+    :type mode: str(Optional)
+    """
 
     def __init__(self, type: str = "", name: str = "", mode="talk"):
         self.addressee = os.getenv('GITHUB_USER') or getpass.getuser()
@@ -24,10 +38,36 @@ class Ego:
             sys.exit(0)
 
     def __str__(self):
+        """Query the persona API to see if there is a object description.
+        
+        This uses the command `look Persona_name` to see if there is a description of 
+        an object.
+        
+        :return: description of the Persona that is defined in the __str__ of the Persona
+        :rtype: str
+
+        Example:
+            if Persona is not there -->  "▌ Persona_name doesn't seem to be present at the moment..."
+            if Person is there --> "▌ You look at Persona_name. Persona_name looks back. It's awkward."                
+ 
+        """
         reference = self.named or self.archetype
         return f"""You look at {reference}. {reference} looks back. It's awkward."""
 
     def __send_message(self, console, msg: str = ""):
+        """Query the persona API to see if there is a message to be sent and saved.
+        
+        This uses the command `talk Persona_name` function to access the ChatGPT chat bot and store conversations 
+        in the server and return the servers responses.
+
+        :param console: Used to print in the terminal
+        :type console: class[rich.console.Console]
+
+        :param msg: This is the message strings that is given to the chat bot.
+        :type msg: str
+
+        :return: None. If the user types 'goodbye' in the chat the chat will end
+        """
         content = requests.post(
             f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/persona/generate/{self.archetype}",
             data={
@@ -36,7 +76,6 @@ class Ego:
             },
             stream=True
         )
-
         response_text = content.json()["response"].strip()
         attachments = content.json()["attachments"]
         # TODO: Decide what to do with attachments?
@@ -75,6 +114,17 @@ class Ego:
     """
 
     def behave(self):
+        """Query the persona API to count messages and sends them.
+        
+        There is a message count and therefore and chatterbox determines if
+        the user or the persona will initiate the conversation.If there is a message count the 
+        program will continue to run.
+        
+        :params self: No params
+
+        :return: None: this program makes changes in whole message count is defined internally
+        """
+
         console = Console()
         if self.chatterbox:
             self.__send_message(console, "")

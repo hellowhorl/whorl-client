@@ -14,6 +14,15 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def convert_temp_scale(state: dict = {}) -> None:
+    """
+    Convert temperature values in the given state dictionary from Kelvin to Celsius or Fahrenheit.
+
+    :param state: A dictionary containing weather data with temperature values under the "main" key, defaults to an empty dictionary.
+    :type state: dict, optional
+    :raises KeyError: If the "main" key or required temperature-related fields are missing from the state dictionary.
+    :return: None
+    :rtype: None
+    """
     for field in state["main"]:
         if "temp" in field or "feels_like" in field:
             state["main"][field] = int(state["main"][field]) - 273.15
@@ -21,12 +30,21 @@ def convert_temp_scale(state: dict = {}) -> None:
                 state["main"][field] = (state["main"][field] * 1.8) + 32
         state["main"][field] = round(state["main"][field], 2)
 
+
 # Import and call the load_dotenv function from the dotenv module (loads environment variables from a .env file)
 from dotenv import load_dotenv
 load_dotenv()
 
 def main():
-    """Display the weather report."""
+    """
+    Display the weather report from the climate API endpoint.
+
+    :raises EnvironmentError: If the required environment variables API_URL or API_PORT are not set
+    :raises requests.exceptions.RequestException: If the API request fails
+    :raises KeyError: If required fields (weather, main, or clouds) are missing in the API response
+    :return: None - Displays a formatted weather report table in the console
+    :rtype: None
+    """
     # Define api_url and port variables
     api_url = os.getenv("API_URL")
     api_port = os.getenv("API_PORT")
