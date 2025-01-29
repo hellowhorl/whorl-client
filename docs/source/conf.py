@@ -44,8 +44,8 @@ html_theme_options = {
         "color-brand-primary": "#e2ad2b", # Primary brand color
         "color-brand-content": "#e2ad2b", # Link color
         "color-link": "#e2ad2b", # Normal links
-        "color-link-hover": "#e0b027", # Hover state
-        "color-link-visited": "#d0d0d0", # Visited links
+        "color-link-hover": "#ffffff", # Hover state
+        "color-link-visited": "#CEAFF4", # Visited links
         
         # Sidebar colors
         "color-sidebar-link-text": "#e0b027", # Sidebar link color
