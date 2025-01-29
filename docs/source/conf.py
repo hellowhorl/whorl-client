@@ -13,7 +13,7 @@ sys.path.insert(0, os.path.abspath('../../src'))
 project = 'hello-whorl'
 copyright = '2025 hello-whorl'
 author = 'Preston Smith, Aidan Dyga, Rebekah Rudd, Jason Gyamafi'
-release = '1.0.0'
+release = '0.0.13'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -31,13 +31,13 @@ language = 'python'
 html_theme = 'furo'
 html_static_path = ['_static']
 html_theme_options = {
-    "light_css_variables": {
+    "dark_css_variables": {
         # Background colors
-        "color-background-primary": "#262932",  # Main content background
-        "color-background-secondary": "#262932", # Sidebar background
+        "color-background-primary": "#202020",  # Main content background
+        "color-background-secondary": "#202020", # Sidebar background
         
         # Text colors
-        "color-foreground-primary": "#ffffff", # Main text color
+        "color-foreground-primary": "#d0d0d0", # Main text color
         "color-foreground-secondary": "#e0b027", # Secondary text color
         
         # Link colors
@@ -45,7 +45,7 @@ html_theme_options = {
         "color-brand-content": "#e2ad2b", # Link color
         "color-link": "#e2ad2b", # Normal links
         "color-link-hover": "#e0b027", # Hover state
-        "color-link-visited": "#e2ad2b", # Visited links
+        "color-link-visited": "#d0d0d0", # Visited links
         
         # Sidebar colors
         "color-sidebar-link-text": "#e0b027", # Sidebar link color
