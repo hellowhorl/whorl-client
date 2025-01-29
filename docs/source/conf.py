@@ -31,6 +31,7 @@ language = 'python'
 html_theme = 'furo'
 html_static_path = ['_static']
 html_theme_options = {
+    "default_dark_mode": True,
     "dark_css_variables": {
         # Background colors
         "color-background-primary": "#202020",  # Main content background
