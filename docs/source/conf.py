@@ -45,7 +45,7 @@ html_theme_options = {
         "color-brand-content": "#e2ad2b",  # Link color
         "color-link": "#e2ad2b",  # Normal links
         "color-link-hover": "#CEAFF4",  # Hover state
-        "color-link-visited": "#CEAFF4",  # Visited links
+        "color-link--visited": "#CEAFF4",  # Visited links
         # Sidebar colors
         "color-sidebar-link-text": "#e0b027",  # Sidebar link color
         "color-sidebar-link-text--top-level": "#e2ad2b",  # Top level sidebar links
