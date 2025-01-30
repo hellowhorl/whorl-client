@@ -60,7 +60,18 @@ npx dotenv-vault@latest pull
 
 2. Set Up Your Environment:
 
-    Utilize the `venv` of your whorl-client project to run the following commands (use the repository of `whorl-client` and cd to `starship-assignment`).
+    Before running the following commands, ensure that the virtual environment for `whorl-client` is activated. Navigate to the `whorl-client` repository and activate the virtual environment:
+
+    ```sh
+    cd path/to/whorl-client
+    source .venv/bin/activate
+    ```
+
+    Then, move to the starship-assignment directory:
+
+    ```sh
+    cd path/to/starship-assignment
+    ```
 
 ### Collect Required Items
 
