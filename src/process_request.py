@@ -17,7 +17,7 @@ def process_request(request):
     """
     # Add authentication headers
     headers = {
-        'Authorization': f"Bearer {os.getenv('API_TOKEN')}",
+        'Authorization': os.getenv('API_TOKEN'),  # Remove 'Bearer' prefix
         'User': os.getenv('GITHUB_USER')
     }
 
