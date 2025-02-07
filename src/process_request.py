@@ -16,15 +16,23 @@ def process_request(request):
     :rtype: requests.Response
     """
     # Add authentication headers
-    request['headers'] = {
+    headers = {
         'Authorization': f"Bearer {os.getenv('API_TOKEN')}",
         'User': os.getenv('GITHUB_USER')
     }
 
-    # Send the request to the server
-    response = requests.post(
-        f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/endpoint",
-        json=request
-    )
+    method = request.get('method', 'GET').upper()
+    url = request.get('url')
+    params = request.get('params', {})
+    data = request.get('data', {})
+
+    if method == 'GET':
+        response = requests.get(url, headers=headers, params=params)
+    elif method == 'POST':
+        response = requests.post(url, headers=headers, json=data)
+    elif method == 'PATCH':
+        response = requests.patch(url, headers=headers, json=data)
+    else:
+        raise ValueError(f"Unsupported HTTP method: {method}")
 
     return response
