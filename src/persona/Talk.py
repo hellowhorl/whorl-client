@@ -21,7 +21,7 @@ class Talk:
             mod = types.ModuleType(persona)
             with open(persona, "r") as fh:
                 data = fh.read()
-            exec(data, mod)
+            exec(data, mod.__dict__)
             getattr(mod, persona)()
         except NotAnEgo:
             console = Console()
