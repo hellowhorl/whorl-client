@@ -7,6 +7,7 @@ import json
 from rich.console import Console
 from rich.table import Table
 from dotenv import load_dotenv
+from process_request import process_request
 
 # Load environment variables from .env file
 # TODO: Do we need to provide guarding around this variable
@@ -49,12 +50,19 @@ def main():
     api_url = os.getenv("API_URL")
     api_port = os.getenv("API_PORT")
 
-    # Sends a get request to the url and stores the response
-    STATE = json.loads(
-        requests.get(
-            f"{api_url}:{api_port}/v1/climate"
-        ).content
-    )
+    # Prepare the request
+    request = {
+        'method': 'GET',
+        'url': f"{api_url}:{api_port}/v1/climate"
+    }
+
+    # Process the request using process_request function
+    response = process_request(request)
+    STATE = response.json()
+
+
+    # Debugging: Print the STATE dictionary
+    print("STATE:", json.dumps(STATE, indent=2))
 
     # Convert the temperature scale to environment-defined scale
     convert_temp_scale(STATE)
