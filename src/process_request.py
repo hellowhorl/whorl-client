@@ -1,4 +1,4 @@
-"""Processes and sends {user,token} for authentication in the server."""
+"""Processes and sends the GitHub Token for authentication in the server."""
 
 import os
 import requests
@@ -18,7 +18,6 @@ def process_request(request):
     # Add authentication headers
     headers = {
         'Authorization': os.getenv('GITHUB_TOKEN'),
-        'User': os.getenv('GITHUB_USER')
     }
 
     method = request.get('method', 'GET').upper()

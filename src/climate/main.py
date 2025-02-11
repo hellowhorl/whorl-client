@@ -60,10 +60,6 @@ def main():
     response = process_request(request)
     STATE = response.json()
 
-
-    # Debugging: Print the STATE dictionary
-    print("STATE:", json.dumps(STATE, indent=2))
-
     # Convert the temperature scale to environment-defined scale
     convert_temp_scale(STATE)
 
