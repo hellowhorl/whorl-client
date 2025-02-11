@@ -15,10 +15,19 @@ def process_request(request):
     :return: The server's response
     :rtype: requests.Response
     """
-    # Add authentication headers
+    # Get GitHub token
+    token = os.getenv('GITHUB_TOKEN')
+    if not token:
+        raise ValueError("GitHub token not found in environment variables")
+
+    # Get GitHub username and add authentication headers
     headers = {
-        'Authorization': os.getenv('GITHUB_TOKEN'),
+        'Authorization': f"token {token}",
     }
+    response = requests.get('https://api.github.com/user', headers=headers)
+    response.raise_for_status()
+    username = response.json()['login']
+    headers['User'] = username
 
     method = request.get('method', 'GET').upper()
     url = request.get('url')
