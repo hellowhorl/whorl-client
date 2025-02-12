@@ -2,12 +2,33 @@ import os
 import sys
 import getpass
 import requests
+import json
 
 from rich.console import Console
 from rich.markdown import Markdown
 from dotenv import load_dotenv
+from process_request import process_request
 
 load_dotenv()
+
+# Define api_url and port variables
+api_url = os.getenv("API_URL")
+api_port = os.getenv("API_PORT")
+
+# This request fails when the if statements in process_request.py are called
+# Prepare the request
+request = {
+    'method': 'POST',
+    'url': f"{api_url}:{api_port}/v1/omnipresence"
+}
+
+# Process the request using process_request function
+response = process_request(request)
+
+STATE = response.json()
+
+# Debugging: Print the STATE dictionary
+# print("STATE:", json.dumps(STATE, indent=2))
 
 class Who:
     """A class to display active users in the current working directory.
