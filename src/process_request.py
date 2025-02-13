@@ -3,6 +3,7 @@
 import os
 import requests
 from dotenv import load_dotenv
+import sys
 
 load_dotenv()
 
@@ -34,6 +35,7 @@ def process_request(request):
     params = request.get('params', {})
     data = request.get('data', {})
 
+    # modify the response based on the web method
     if method == 'GET':
         response = requests.get(url, headers=headers, params=params)
     elif method == 'POST':
@@ -42,5 +44,10 @@ def process_request(request):
         response = requests.patch(url, headers=headers, json=data)
     else:
         raise ValueError(f"Unsupported HTTP method: {method}")
+    
+    # display nothing if a 403 is returned
+    if response.status_code == 403:
+        sys.exit(1) # exit the program and return nothing if the response is 403
+
 
     return response
