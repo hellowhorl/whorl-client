@@ -6,8 +6,10 @@ import requests
 from rich.console import Console
 from rich.markdown import Markdown
 from dotenv import load_dotenv
+from omnipresence import report
 
 load_dotenv()
+
 
 class Ego:
     """A class to create Persona's who are have different abilities and the world.
@@ -30,12 +32,52 @@ class Ego:
         self.archetype = type
         self.named = name or type
         self.chatterbox = False
+
+        # report persona presence
+        if self.archetype:
+            self._report_persona_presence()
+        
+        # check if the persona's inventory is registered.
+        # if self.archetype:
+        #     self.report_persona_inventory()
+        
         is_registered = requests.get(
             f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/persona/search/{type}"
         )
         if is_registered.status_code == 200 and mode == "talk":
             self.behave()
             sys.exit(0)
+
+    def _report_persona_presence(self):
+        """Report the presence of the persona to the omnipresence system."""
+        try:
+            # create a new presence record for the persona
+            response = requests.post(
+                f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence/",
+                data={
+                    "username": self.archetype,  # use archetype as username
+                    "charname": self.named,      # use persona name as charname
+                    "working_dir": os.getcwd()
+                }
+            )
+
+        except requests.exceptions.RequestException as e:
+            print(f"Error connecting to API: {e}")
+
+    # im still working on this
+    # def report_persona_inventory(self):
+    #     """Query the persona API and report the persona's inventory."""
+    #     try:
+    #         # get the persona's inventory
+    #         response = requests.get(
+    #             f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/persona/{self.archetype}/inventory"
+    #         )
+    #         if response.status_code == 200:
+    #             console = Console()
+    #             console.print(Markdown(f"> Inventory of {self.named or self.archetype}: \n{response.json()}"))
+    #         else:
+    #             console = Console()
+    #             console.print(Markdown(f"> No inventory found for {self.named or self.archetype}"))
 
     def __str__(self):
         """Query the persona API to see if there is a object description.
@@ -49,7 +91,7 @@ class Ego:
         Example:
             if Persona is not there -->  "▌ Persona_name doesn't seem to be present at the moment..."
             if Person is there --> "▌ You look at Persona_name. Persona_name looks back. It's awkward."                
- 
+
         """
         reference = self.named or self.archetype
         return f"""You look at {reference}. {reference} looks back. It's awkward."""
