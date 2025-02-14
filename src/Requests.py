@@ -15,6 +15,23 @@ class Request:
         self.method = str
         self.url = str
         self.headers = {}
+        if self.__create_auth_header():
+            getattr(self, f"_Request__{method.lower()}")(url, headers)
+
+    def __create_auth_header(self):
+        token = os.getenv('GITHUB_TOKEN')
+        if not token:
+            raise ValueError("GitHub token not found in environment variables")
+        # Get GitHub username and add authentication headers
+        headers = {
+            'Authorization': f"token {token}",
+        }
+        response = requests.get('https://api.github.com/user', headers=headers)
+        try:
+            response.raise_for_status()
+            return True
+        except:
+            sys.exit(1)
 
     def __get(self) -> Dict:
         response = requests.get(self.url, self.headers)
@@ -25,58 +42,12 @@ class Request:
         response = requests.post(self.url, self.headers)
         return response
 
-    # def __patch(self) -> Dict:
-    #     response = requests.patch(self.url, self.headers, json=data)
-    #     return response
-    
-    # def __delete(self) -> Dict:
-    #     return response
+    def __patch(self, url: str, headers: Dict) -> Dict:
+        response = requests.patch(url, headers=headers, json=data)
+        return response
 
-    # def __update(self) -> Dict:
-    #     return response
+    def __delete(self, url: str, headers: Dict) -> Dict:
+        return response
 
-    def call_method(self):
-
-        token = os.getenv('GITHUB_TOKEN')
-        if not token:
-            raise ValueError("GitHub token not found in environment variables")
-
-        # Get GitHub username and add authentication headers
-        self.headers = {
-            'Authorization': f"token {token}",
-        }
-
-        response = requests.get('https://api.github.com/user', headers=headers)
-        response.raise_for_status()
-
-        # add the username to headers
-        username = response.json()['login']
-        self.headers['User'] = username
-
-        # print("here")
-        # Call the GET method
-        if self.method == 'GET':
-            return self.__get(url, headers)
-
-        # Call the POST method
-        elif self.method == 'POST':
-            return self.__post(url, headers)
-
-        # Call the PATCH method
-        elif self.method == 'PATCH':
-            return self.__patch(url, headers)
-
-        # Call the DELETE method
-        elif self.method == 'DELETE':
-            return self.__delete(url, headers)
-
-        # Call the UPDATE method
-        elif self.method == 'UPDATE':
-            return self.__update(url, headers)
-
-        # display nothing if a 403 is returned
-        elif response.status_code == 403:
-            sys.exit(1) # exit the program and return nothing if the response is 403
-
-        else:
-            return "Invalid method name"
+    def __update(self, url: str, headers: Dict) -> Dict:
+        return response
