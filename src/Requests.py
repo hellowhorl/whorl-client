@@ -16,33 +16,33 @@ class Request:
         self.url = str
         self.headers = {}
 
-    def __get(self, url: str, headers: Dict) -> Dict:
-        response = requests.get(url, headers=headers)
+    def __get(self) -> Dict:
+        response = requests.get(self.url, self.headers)
         return response
 
-    def __post(self, url: str, headers: Dict) -> Dict:
+    def __post(self) -> Dict:
         # TODO: for post this needs to be json data
-        response = requests.post(url, headers=headers,)
+        response = requests.post(self.url, self.headers)
         return response
 
-    def __patch(self, url: str, headers: Dict) -> Dict:
-        response = requests.patch(url, headers=headers, json=data)
-        return response
+    # def __patch(self) -> Dict:
+    #     response = requests.patch(self.url, self.headers, json=data)
+    #     return response
     
-    def __delete(self, url: str, headers: Dict) -> Dict:
-        return response
+    # def __delete(self) -> Dict:
+    #     return response
 
-    def __update(self, url: str, headers: Dict) -> Dict:
-        return response
+    # def __update(self) -> Dict:
+    #     return response
 
-    def call_method(self, method, request):
+    def call_method(self):
 
         token = os.getenv('GITHUB_TOKEN')
         if not token:
             raise ValueError("GitHub token not found in environment variables")
 
         # Get GitHub username and add authentication headers
-        headers = {
+        self.headers = {
             'Authorization': f"token {token}",
         }
 
@@ -51,27 +51,27 @@ class Request:
 
         # add the username to headers
         username = response.json()['login']
-        headers['User'] = username
+        self.headers['User'] = username
 
-
+        # print("here")
         # Call the GET method
-        if method == 'GET':
+        if self.method == 'GET':
             return self.__get(url, headers)
 
         # Call the POST method
-        elif method == 'POST':
+        elif self.method == 'POST':
             return self.__post(url, headers)
 
         # Call the PATCH method
-        elif method == 'PATCH':
+        elif self.method == 'PATCH':
             return self.__patch(url, headers)
 
         # Call the DELETE method
-        elif method == 'DELETE':
+        elif self.method == 'DELETE':
             return self.__delete(url, headers)
 
         # Call the UPDATE method
-        elif method == 'UPDATE':
+        elif self.method == 'UPDATE':
             return self.__update(url, headers)
 
         # display nothing if a 403 is returned
