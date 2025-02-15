@@ -35,11 +35,11 @@ class Ego:
 
         # report persona presence
         if self.archetype:
-            self._report_persona_presence()
+            self.report_persona_presence()
         
-        # check if the persona's inventory is registered.
-        # if self.archetype:
-        #     self.report_persona_inventory()
+        # check if persona's inventory should be reported
+        if self.archetype:
+            self.report_persona_inventory()
         
         is_registered = requests.get(
             f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/persona/search/{type}"
@@ -48,7 +48,7 @@ class Ego:
             self.behave()
             sys.exit(0)
 
-    def _report_persona_presence(self):
+    def report_persona_presence(self):
         """Report the presence of the persona to the omnipresence system."""
         try:
             # create a new presence record for the persona
@@ -64,20 +64,15 @@ class Ego:
         except requests.exceptions.RequestException as e:
             print(f"Error connecting to API: {e}")
 
-    # im still working on this
-    # def report_persona_inventory(self):
-    #     """Query the persona API and report the persona's inventory."""
-    #     try:
-    #         # get the persona's inventory
-    #         response = requests.get(
-    #             f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/persona/{self.archetype}/inventory"
-    #         )
-    #         if response.status_code == 200:
-    #             console = Console()
-    #             console.print(Markdown(f"> Inventory of {self.named or self.archetype}: \n{response.json()}"))
-    #         else:
-    #             console = Console()
-    #             console.print(Markdown(f"> No inventory found for {self.named or self.archetype}"))
+    def report_persona_inventory(self):
+        """Query the persona API and report the persona's inventory."""
+        try:
+            # get the persona's inventory
+            response = requests.get(
+                f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/persona/{self.archetype}/inventory"
+            )
+        except requests.exceptions.RequestException as e:
+            print(f"Error connecting to API: {e}")
 
     def __str__(self):
         """Query the persona API to see if there is a object description.
