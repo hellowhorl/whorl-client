@@ -17,7 +17,7 @@ class Request:
         self.url = url
         self.headers = headers
         if self.__create_auth_header():
-            getattr(self, f"_Request__{method.lower()}")() # add to this
+            getattr(self, f"_Request__{method.lower()}")(url, headers)
 
     def __create_auth_header(self):
         token = os.getenv('GITHUB_TOKEN')
