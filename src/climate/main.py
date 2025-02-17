@@ -7,11 +7,10 @@ import json
 from rich.console import Console
 from rich.table import Table
 from dotenv import load_dotenv
-from process_request import process_request
+from Requests import Request
 
 # Load environment variables from .env file
-# TODO: Do we need to provide guarding around this variable
-#       once it's in the Codespace (i.e. no env file)?
+
 load_dotenv()
 
 def convert_temp_scale(state: dict = {}) -> None:
@@ -31,11 +30,6 @@ def convert_temp_scale(state: dict = {}) -> None:
                 state["main"][field] = (state["main"][field] * 1.8) + 32
         state["main"][field] = round(state["main"][field], 2)
 
-
-# Import and call the load_dotenv function from the dotenv module (loads environment variables from a .env file)
-from dotenv import load_dotenv
-load_dotenv()
-
 def main():
     """
     Display the weather report from the climate API endpoint.
@@ -50,15 +44,8 @@ def main():
     api_url = os.getenv("API_URL")
     api_port = os.getenv("API_PORT")
 
-    # Prepare the request
-    request = {
-        'method': 'GET',
-        'url': f"{api_url}:{api_port}/v1/climate"
-    }
-
-    # Process the request using process_request function
-    response = process_request(request)
-    STATE = response.json()
+    client = Request(method='GET', url=f"{api_url}:{api_port}/v1/climate", headers={}) # Create an instance of the Request class
+    STATE = client.__get()  # Parse the JSON response
 
     # Convert the temperature scale to environment-defined scale
     convert_temp_scale(STATE)
