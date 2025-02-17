@@ -7,7 +7,7 @@ import json
 from rich.console import Console
 from rich.table import Table
 from dotenv import load_dotenv
-from Requests import Request
+from request import Request
 
 # Load environment variables from .env file
 
@@ -45,7 +45,7 @@ def main():
     api_port = os.getenv("API_PORT")
 
     client = Request(method='GET', url=f"{api_url}:{api_port}/v1/climate", headers={}) # Create an instance of the Request class
-    STATE = client.__get()  # Parse the JSON response
+    STATE = client()  # Parse the JSON response
 
     # Convert the temperature scale to environment-defined scale
     convert_temp_scale(STATE)
