@@ -12,6 +12,7 @@ class Request:
     """Defining a request class which uses different methods to return different parameters to the server."""
 
     def __init__(self, method: str, url: str, headers: Dict={}):
+        """Initialize RequestProcessor with the incoming request."""
         self.method = str
         self.url = str
         self.headers = {}
@@ -19,6 +20,7 @@ class Request:
             getattr(self, f"_Request__{method.lower()}")(url, headers)
 
     def __create_auth_header(self):
+        """Create authentication header with GitHub token."""
         token = os.getenv('GITHUB_TOKEN')
         if not token:
             raise ValueError("GitHub token not found in environment variables")
@@ -34,20 +36,24 @@ class Request:
             sys.exit(1)
 
     def __get(self) -> Dict:
+        """Send a GET request."""
         response = requests.get(self.url, self.headers)
         return response
 
     def __post(self) -> Dict:
-        # TODO: for post this needs to be json data
+        """Send a POST request."""
         response = requests.post(self.url, self.headers)
         return response
 
     def __patch(self, url: str, headers: Dict) -> Dict:
+        """Send a PATCH request."""
         response = requests.patch(url, headers=headers, json=data)
         return response
 
     def __delete(self, url: str, headers: Dict) -> Dict:
+        """Send a DELETE request."""
         return response
 
     def __update(self, url: str, headers: Dict) -> Dict:
+        """Send an UPDATE request."""
         return response
