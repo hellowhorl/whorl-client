@@ -13,21 +13,24 @@ load_dotenv()
 class Request:
     """Defining a request class which uses different methods to return different parameters to the server."""
 
-    def __init__(self, method: str, url: str, data: Dict = {}, headers: Dict = {}):
+    def __init__(
+        self, method: str, url: str, files={}, data: Dict = {}, headers: Dict = {}
+    ):
         """Initialize RequestProcessor with the incoming request."""
         self.method = method
         self.url = url
         self.data = data
         self.headers = headers
+        self.files = files
         self.__create_auth_header()
 
-    def __call__(self):
+    def __call__(self) -> requests.Response:
         response: requests.Response = getattr(
             self, f"_Request__{self.method.lower()}"
         )()
         try:
             response.raise_for_status()
-            return response.json()
+            return response
         except requests.HTTPError as e:
             print(f"Something went wrong: {e}")
             sys.exit(1)
@@ -42,22 +45,31 @@ class Request:
         self.headers["user"] = user
 
     def __get(self) -> requests.Response:
-        response = requests.get(url=self.url, params=self.data, headers=self.headers)
+        response = requests.get(
+            url=self.url, files=self.files, params=self.data, headers=self.headers
+        )
         return response
 
     def __post(self) -> requests.Response:
-        # TODO: for post this needs to be json data
-        response = requests.post(self.url, headers=self.headers)
-        return response.json()
+        response = requests.post(
+            self.url, files=self.files, data=self.data, headers=self.headers
+        )
+        return response
 
     def __patch(self) -> requests.Response:
-        response = requests.patch(self.url, headers=self.headers, json={})
-        return response.json()
+        response = requests.patch(
+            self.url, files=self.files, data=self.data, headers=self.headers, json={}
+        )
+        return response
 
     def __delete(self) -> requests.Response:
-        response = requests.delete(self.url, headers=self.headers)
-        return response.json()
+        response = requests.delete(
+            self.url, files=self.files, params=self.data, headers=self.headers
+        )
+        return response
 
     def __update(self) -> requests.Response:
-        response = requests.put(self.url, headers=self.headers)
-        return response.json()
+        response = requests.put(
+            self.url, files=self.files, params=self.data, headers=self.headers
+        )
+        return response

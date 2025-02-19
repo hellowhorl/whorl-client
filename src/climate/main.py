@@ -13,6 +13,7 @@ from request import Request
 
 load_dotenv()
 
+
 def convert_temp_scale(state: dict = {}) -> None:
     """
     Convert temperature values in the given state dictionary from Kelvin to Celsius or Fahrenheit.
@@ -30,6 +31,7 @@ def convert_temp_scale(state: dict = {}) -> None:
                 state["main"][field] = (state["main"][field] * 1.8) + 32
         state["main"][field] = round(state["main"][field], 2)
 
+
 def main():
     """
     Display the weather report from the climate API endpoint.
@@ -44,8 +46,10 @@ def main():
     api_url = os.getenv("API_URL")
     api_port = os.getenv("API_PORT")
 
-    client = Request(method='GET', url=f"{api_url}:{api_port}/v1/climate", headers={}) # Create an instance of the Request class
-    STATE = client()  # Parse the JSON response
+    STATE = Request(
+        method="GET", url=f"{api_url}:{api_port}/v1/climate", headers={}
+    )().json()  # Create an instance of the Request class
+    # Parse the JSON response
 
     # Convert the temperature scale to environment-defined scale
     convert_temp_scale(STATE)
@@ -58,7 +62,7 @@ def main():
         "Snow": "❄️",
         "Thunderstorm": "⛈️",
         "Drizzle": "🌦️",
-        "Mist": "🌫️"
+        "Mist": "🌫️",
     }
 
     temp_scale_symbol = os.getenv("TEMP_SCALE") or "C"
@@ -68,7 +72,10 @@ def main():
     table.add_column()
     table.add_column()
     data = [
-        ("Weather", f"{weather_emojis.get(STATE['weather'][0]['main'], '')} {STATE['weather'][0]['main']}"),
+        (
+            "Weather",
+            f"{weather_emojis.get(STATE['weather'][0]['main'], '')} {STATE['weather'][0]['main']}",
+        ),
         ("Temperature", f'{STATE["main"]["temp"]} °{temp_scale_symbol}'),
         ("Feels Like", f'{STATE["main"]["feels_like"]} °{temp_scale_symbol}'),
         ("Min Temp", f'{STATE["main"]["temp_min"]} °{temp_scale_symbol}'),
@@ -78,7 +85,7 @@ def main():
         ("Visibility", f'{STATE["visibility"]} m'),
         ("Wind Speed", f'{STATE["wind"]["speed"]} m/s'),
         # ("Rain", f'{STATE.get("rain", {}).get("1h", "N/A")} mm'),
-        ("Clouds", f'{STATE["clouds"]["all"]}%')
+        ("Clouds", f'{STATE["clouds"]["all"]}%'),
     ]
     for i, (label, value) in enumerate(data):
         table.add_row(label, value)
@@ -87,6 +94,7 @@ def main():
     console.print("")
     console.print(table)
     console.print("")
+
 
 if __name__ == "__main__":
     main()
