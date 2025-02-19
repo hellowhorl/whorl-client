@@ -7,20 +7,31 @@ import json
 from rich.console import Console
 from rich.markdown import Markdown
 from dotenv import load_dotenv
-import requests
+from request import Request
 
 
 # from process_request import process_request
 
 load_dotenv()
 
+# Define api_url and port variables
+# api_url = os.getenv("API_URL")
+# api_port = os.getenv("API_PORT")
+
+# url = f"{api_url}:{api_port}/v1/omnipresence"
+
+# post_request = request.Request('POST', url, {})
+
 # # Define api_url and port variables
-api_url = os.getenv("API_URL")
-api_port = os.getenv("API_PORT")
+# api_url = os.getenv("API_URL")
+# api_port = os.getenv("API_PORT")
 
-url = f"{api_url}:{api_port}/v1/omnipresence"
-
-post_request = requests.Request('POST', url, {})
+client = Request(method='POST', url=f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence", headers={})
+# Create an instance of the Request class
+# STATE = client()  # Parse the JSON response
+# client()
+# Convert the temperature scale to environment-defined scale
+# convert_temp_scale(STATE)
 
 
 class Who:
@@ -60,6 +71,10 @@ class Who:
         :rtype: list
         :raises requests.exceptions.RequestException: If the API request fails
         """
+        
+        # authenticate
+        Request(method='POST', url=f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence", headers={})
+
         actives = requests.post(
             f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence/local/",
             data = {
@@ -87,9 +102,13 @@ class Who:
             Without users:
                 > It appears that you are alone...
         """
+
+        # authenticate
+        Request(method='POST', url=f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence", headers={})
+
         console = Console()
         if len(user_list) > 0:
-            # print(user_list)
+            # print("user list: ",user_list)
             users_fmt = [f"`🧙 {user['charname']}`" for user in user_list]
             markdown = f"> Users active in **{os.getcwd()}**: {', '.join(users_fmt)}"
             console.print(Markdown(markdown))
@@ -110,4 +129,8 @@ def cmd():
         $ python -m omnipresence.who
         > Users active in **/current/dir**: `🧙 user1`
     """
+
+    # authenticate
+    Request(method='POST', url=f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence", headers={})
+   
     Who()

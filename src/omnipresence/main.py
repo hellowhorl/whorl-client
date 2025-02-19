@@ -2,6 +2,7 @@ import os
 import json
 import getpass
 import requests
+from request import Request
 
 from dotenv import load_dotenv
 
@@ -17,6 +18,9 @@ def get():
     :rtype: dict
     :raises requests.exceptions.RequestException: If the API request fails
     """
+    # authenticate
+    client = Request(method='GET', url=f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence", headers={}) # Create an instance of the Request class
+
     response = requests.get(
         f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence",
         params = {
@@ -24,6 +28,7 @@ def get():
         }
     )
     return response.json()
+
 
 def post():
     """Create new presence record for current user.
@@ -36,6 +41,10 @@ def post():
     :rtype: bool
     :raises requests.exceptions.RequestException: If the API request fails
     """
+
+    # authenticate
+    client = Request(method='POST', url=f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence", headers={}) # Create an instance of the Request class
+
     response = requests.post(
         f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence/",
         data = {
@@ -61,6 +70,10 @@ def patch(data: dict = {}):
     :raises requests.exceptions.RequestException: If API request fails
     :raises KeyError: If required data fields missing
     """
+
+    # authenticate
+    client = Request(method='PATCH', url=f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence", headers={}) # Create an instance of the Request class
+
     response = requests.patch(
         f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence/update/{data['pk']}/",
         data = {
@@ -83,6 +96,10 @@ def report():
     :rtype: None
     :raises requests.exceptions.RequestException: If API requests fail
     """
+
+    # authenticate
+    client = Request(method='GET', url=f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence", headers={}) # Create an instance of the Request class
+
     data = get()
     if len(data) == 1:
         patch(data[0])
