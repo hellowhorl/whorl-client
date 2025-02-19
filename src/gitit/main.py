@@ -3,7 +3,6 @@
 from .Config import Config
 
 from request import Request
-from pathlib import Path
 from fake_useragent import UserAgent
 
 ua = UserAgent()
@@ -36,7 +35,6 @@ def get(
         headers={"User-Agent": ua.chrome},
     )()
     text = str(raw.text)
-    Path(file_name).touch()
-    file = open(file_name, "w")
+    file = open(file_name, "w+")
     file.write(text)
     file.close()
