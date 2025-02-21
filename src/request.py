@@ -3,12 +3,11 @@
 import getpass
 import os
 import requests
-from dotenv import load_dotenv
+from dotenv import load_dotenv, set_key
 import sys
 from typing import Dict
 
 load_dotenv()
-
 
 class Request:
     """Defining a request class which uses different methods to return different parameters to the server."""
@@ -28,10 +27,17 @@ class Request:
         response: requests.Response = getattr(
             self, f"_Request__{self.method.lower()}"
         )()
+        # load in the login field from the env file
+        dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
+        load_dotenv(dotenv_path)
         try:
             response.raise_for_status()
+            # set the login env variable to true
+            self.__update_env_variable("LOGIN", "true")
             return response
         except requests.HTTPError as e:
+            if response.status_code == 403:
+                self.__update_env_variable("LOGIN", "false")
             print(f"Something went wrong: {e}")
             sys.exit(1)
 
@@ -73,3 +79,8 @@ class Request:
             self.url, files=self.files, params=self.data, headers=self.headers
         )
         return response
+
+    def __update_env_variable(self, key: str, value: str):
+        """Update the environment variable in the .env file."""
+        dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
+        set_key(dotenv_path, key, value)
