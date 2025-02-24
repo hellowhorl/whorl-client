@@ -30,14 +30,18 @@ class Request:
         )()
         try:
             response.raise_for_status()
+            os.environ['LOGIN'] = 'True'
             return response
         except requests.HTTPError as e:
+            if response.status_code == 403:
+                os.environ['LOGIN'] = 'False'
             print(f"Something went wrong: {e}")
             sys.exit(1)
 
     def __create_auth_header(self):
         token = os.getenv("GITHUB_TOKEN")
         user = os.getenv("GITHUB_USER") or getpass.getuser()
+
         if not token:
             raise ValueError("GitHub token not found in environment variables")
         # Get GitHub username and add authentication headers
