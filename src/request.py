@@ -3,11 +3,8 @@
 import getpass
 import os
 import requests
-from dotenv import load_dotenv
 import sys
 from typing import Dict
-
-load_dotenv()
 
 
 class Request:
@@ -77,3 +74,7 @@ class Request:
             self.url, files=self.files, params=self.data, headers=self.headers
         )
         return response
+
+    def __update_env_variable(self, key: str, value: str):
+        """Update the environment variable"""
+        os.environ[key] = value
