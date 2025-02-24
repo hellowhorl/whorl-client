@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def get():
+def get(agent_name: str = ""):
     """Get current user's presence record from API.
     
     Makes a GET request to the omnipresence API endpoint to retrieve the 
@@ -20,12 +20,12 @@ def get():
     response = requests.get(
         f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence",
         params = {
-            "charname": os.getenv('GITHUB_USER') or getpass.getuser()
+            "charname": os.getenv('GITHUB_USER') or agent_name or getpass.getuser()
         }
     )
     return response.json()
 
-def post():
+def post(agent_name: str = ""):
     """Create new presence record for current user.
     
     Posts a new presence record to the omnipresence API for the currently 
@@ -39,8 +39,8 @@ def post():
     response = requests.post(
         f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence/",
         data = {
-            "username": os.getenv('GITHUB_USER') or getpass.getuser(),
-            "charname": os.getenv('GITHUB_USER') or getpass.getuser(),
+            "username": os.getenv('GITHUB_USER') or agent_name or getpass.getuser(),
+            "charname": os.getenv('GITHUB_USER') or agent_name or getpass.getuser(),
             "working_dir": os.getcwd()
         }
     )
@@ -48,7 +48,7 @@ def post():
         return True
     return False
 
-def patch(data: dict = {}):
+def patch(agent_name: str = "", data: dict = {}):
     """Update existing presence record.
     
     Updates an existing presence record in the omnipresence API with new data
@@ -64,7 +64,7 @@ def patch(data: dict = {}):
     response = requests.patch(
         f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence/update/{data['pk']}/",
         data = {
-            "charname": data['charname'],
+            "charname": agent_name or data['charname'],
             "working_dir": os.getcwd(),
             "partial": True
         }
@@ -73,7 +73,7 @@ def patch(data: dict = {}):
         return True
     return False
 
-def report():
+def report(agent_name: str = ""):
     """Update existing record or create new one.
     
     Gets current presence data and either updates existing record
@@ -83,8 +83,8 @@ def report():
     :rtype: None
     :raises requests.exceptions.RequestException: If API requests fail
     """
-    data = get()
+    data = get(agent_name)
     if len(data) == 1:
-        patch(data[0])
+        patch(agent_name, data[0])
     if len(data) == 0:
-        post()
+        post(agent_name)

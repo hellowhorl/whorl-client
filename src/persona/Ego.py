@@ -10,7 +10,6 @@ from omnipresence import report
 
 load_dotenv()
 
-
 class Ego:
     """A class to create Persona's who are have different abilities and the world.
     
@@ -51,15 +50,16 @@ class Ego:
     def report_persona_presence(self):
         """Report the presence of the persona to the omnipresence system."""
         try:
+            report(self.named)
             # create a new presence record for the persona
-            response = requests.post(
-                f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence/",
-                data={
-                    "username": self.archetype,  # use archetype as username
-                    "charname": self.named,      # use persona name as charname
-                    "working_dir": os.getcwd()
-                }
-            )
+            #response = requests.post(
+            #    f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence/",
+            #    data={
+            #        "username": self.archetype,  # use archetype as username
+            #        "charname": self.named,      # use persona name as charname
+            #        "working_dir": os.getcwd()
+            #    }
+            #)
 
         except requests.exceptions.RequestException as e:
             print(f"Error connecting to API: {e}")

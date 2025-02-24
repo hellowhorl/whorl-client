@@ -27,6 +27,7 @@ class Talk:
             console = Console()
             console.print(Markdown(f"> But {persona} isn't sentient!"))
         except Exception as e:
+            print(e)
             console = Console()
             block = f"> You try to talk to {persona}, but they're not here!"
             console.print(Markdown(block))
