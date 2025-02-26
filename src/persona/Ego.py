@@ -35,11 +35,7 @@ class Ego:
         # report persona presence
         if self.archetype:
             self.report_persona_presence()
-        
-        # check if persona's inventory should be reported
-        if self.archetype:
-            self.report_persona_inventory()
-        
+
         is_registered = requests.get(
             f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/persona/search/{type}"
         )
@@ -51,26 +47,6 @@ class Ego:
         """Report the presence of the persona to the omnipresence system."""
         try:
             report(self.named)
-            # create a new presence record for the persona
-            #response = requests.post(
-            #    f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/omnipresence/",
-            #    data={
-            #        "username": self.archetype,  # use archetype as username
-            #        "charname": self.named,      # use persona name as charname
-            #        "working_dir": os.getcwd()
-            #    }
-            #)
-
-        except requests.exceptions.RequestException as e:
-            print(f"Error connecting to API: {e}")
-
-    def report_persona_inventory(self):
-        """Query the persona API and report the persona's inventory."""
-        try:
-            # get the persona's inventory
-            response = requests.get(
-                f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/persona/{self.archetype}/inventory"
-            )
         except requests.exceptions.RequestException as e:
             print(f"Error connecting to API: {e}")
 
