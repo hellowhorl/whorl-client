@@ -9,12 +9,23 @@ from pathlib import Path
 
 
 class Request:
-    """Defining a request class which uses different methods to return different parameters to the server."""
+    """Defining a request class which uses different methods to return different parameters to the server.
 
+    This class handles HTTP requests with authentication to the server API, supporting
+    various HTTP methods (GET, POST, PATCH, DELETE, PUT) with consistent authentication
+    and error handling.
+    """
     def __init__(
         self, method: str, url: str, files={}, data: Dict = {}, headers: Dict = {}
     ):
-        """Initialize RequestProcessor with the incoming request."""
+        """Initialize with request parameters.
+
+        :param method: HTTP method (GET, POST, PATCH, DELETE, UPDATE)
+        :param url: API endpoint URL
+        :param files: Files to upload, defaults to {}
+        :param data: Request data/parameters, defaults to {}
+        :param headers: HTTP headers, defaults to {}
+        """
         self.method = method
         self.url = url
         self.data = data
@@ -23,6 +34,15 @@ class Request:
         self.__create_auth_header()
 
     def __call__(self) -> requests.Response:
+        """Execute HTTP request with specified method and handle response.
+
+        Makes the HTTP request using the appropriate method, handles authentication,
+        and manages errors. Updates login status based on response.
+
+        :return: Response object from the request
+        :rtype: requests.Response
+        :raises SystemExit: If HTTP error occurs
+        """
         response: requests.Response = getattr(
             self, f"_Request__{self.method.lower()}"
         )()
@@ -40,6 +60,15 @@ class Request:
             # workspaces
 
     def __create_auth_header(self):
+        """Create authentication headers using GitHub token.
+
+        Retrieves GitHub token and username from environment variables
+        and adds them to the request headers.
+
+        :return: None
+        :rtype: None
+        :raises ValueError: If GitHub token is not found
+        """
         token = os.getenv("GITHUB_TOKEN")
         user = os.getenv("GITHUB_USER") or getpass.getuser()
 
