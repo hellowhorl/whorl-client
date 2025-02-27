@@ -46,30 +46,65 @@ class Request:
         self.headers["user"] = user
 
     def __get(self) -> requests.Response:
+        """Past the GET request to the server.
+
+        Makes a GET request to the API endpoint with the current directory path
+        and passes a url, file, params, and headers.
+
+        :return: If the user is authenticated or if there was a response that wasn't 200
+        """
         response = requests.get(
             url=self.url, files=self.files, params=self.data, headers=self.headers
         )
         return response
 
     def __post(self) -> requests.Response:
+        """Past the POST request to the server.
+
+        Makes a POST request to the API endpoint with the current directory path
+        and passes a url, file, params, and headers.
+
+        :return: If the user is authenticated or if there was a response that wasn't 200
+        """
         response = requests.post(
             self.url, files=self.files, data=self.data, headers=self.headers
         )
         return response
 
     def __patch(self) -> requests.Response:
+        """Past the PATCH request to the server.
+
+        Makes a PATCH request to the API endpoint with the current directory path
+        and passes a url, file, params, and headers.
+
+        :return: If the user is authenticated or if there was a response that wasn't 200
+        """
         response = requests.patch(
             self.url, files=self.files, data=self.data, headers=self.headers, json={}
         )
         return response
 
     def __delete(self) -> requests.Response:
+        """Past the DELETE request to the server.
+
+        Makes a DELETE request to the API endpoint with the current directory path
+        and passes a url, file, params, and headers.
+
+        :return: If the user is authenticated or if there was a response that wasn't 200
+        """
         response = requests.delete(
             self.url, files=self.files, params=self.data, headers=self.headers
         )
         return response
 
     def __update(self) -> requests.Response:
+        """Past the UPDATE request to the server.
+
+        Makes a UPDATE request to the API endpoint with the current directory path
+        and passes a url, file, params, and headers.
+
+        :return: If the user is authenticated or if there was a response that wasn't 200
+        """
         response = requests.put(
             self.url, files=self.files, params=self.data, headers=self.headers
         )
