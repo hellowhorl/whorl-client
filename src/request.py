@@ -5,6 +5,7 @@ import os
 import requests
 import sys
 from typing import Dict
+from pathlib import Path
 
 
 class Request:
@@ -27,13 +28,16 @@ class Request:
         )()
         try:
             response.raise_for_status()
-            os.environ['LOGIN'] = 'True'
+            # LOGIN IS TRUE
+            false_login_file(False)
             return response
         except requests.HTTPError as e:
             if response.status_code == 403:
-                os.environ['LOGIN'] = 'False'
+                # LOGIN IS FALSE
+                false_login_file(True)
             print(f"Something went wrong: {e}")
             sys.exit(1)
+            # workspaces
 
     def __create_auth_header(self):
         token = os.getenv("GITHUB_TOKEN")
@@ -74,3 +78,47 @@ class Request:
             self.url, files=self.files, params=self.data, headers=self.headers
         )
         return response
+
+
+def false_login_file(should_add: bool = True) -> Path:
+    """Calculate repository root path and manage .worldloginfalse file.
+    
+    This function finds the root directory of the current Git repository,
+    then either creates or removes a file named .worldloginfalse in the parent directory.
+    
+    :param should_add: If True, create the file; if False, remove it if it exists
+    :type should_add: bool, optional
+    :return: Path to the file (whether created or removed)
+    :rtype: Path
+    """
+    try:
+        root_dir = os.path.expanduser(
+            os.getenv("FILE_SYSTEM") + os.getenv("RepositoryName")
+        )
+    except TypeError:
+        # Find repository root by looking for .git directory
+        cwd = os.getcwd()
+        root_dir = None
+        while cwd != "/":
+            path = os.path.join(cwd, ".git")
+            if os.path.exists(path):
+                root_dir = Path(path).parent.absolute()
+                break
+            cwd = os.path.dirname(cwd)
+    if root_dir:
+        # Set path for .worldloginfalse file one directory above repo root
+        parent_dir = Path(root_dir).parent
+        login_false_file = parent_dir / ".worldloginfalse"
+        
+        if should_add:
+            # Create empty file
+            with open(login_false_file, 'w') as f:
+                pass
+        else:
+            # Remove file if it exists
+            if login_false_file.exists():
+                login_false_file.unlink()
+                
+        return login_false_file
+    
+    return None
