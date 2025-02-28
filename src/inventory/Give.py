@@ -1,3 +1,4 @@
+import getpass
 import os
 import sys
 import types
@@ -6,10 +7,13 @@ import requests
 import importlib
 import narrator
 
+from request import Request
+
 from dotenv import load_dotenv
 from .Instance import Instance
 
 load_dotenv()
+
 
 class Give:
     """A class to handle giving items to other users in the inventory system.
@@ -47,13 +51,14 @@ class Give:
         :rtype: dict
         :raises requests.exceptions.RequestException: If the API request fails
         """
-        item = requests.post(
-            f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/inventory/search/",
-            data = {
-                "charname": os.getenv('GITHUB_USER') or getpass.getuser(),
-                "item_name": self.item_name
-            }
-        )
+        item = Request(
+            method="POST",
+            url=f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/inventory/search/",
+            data={
+                "charname": os.getenv("GITHUB_USER") or getpass.getuser(),
+                "item_name": self.item_name,
+            },
+        )()
         if item.status_code == 200:
             return item.json()
         return {}
@@ -65,13 +70,15 @@ class Give:
         :rtype: bool
         """
         # TODO: Could substitute with YesNoQuestion (from narrator)
-        q = narrator.Question({
-            "question": f"Give {self.item_name} to {self.item_receiver}?",
-            "responses": [
-                {"choice": "yes", "outcome": True},
-                {"choice": "no", "outcome": False}
-            ]
-        })
+        q = narrator.Question(
+            {
+                "question": f"Give {self.item_name} to {self.item_receiver}?",
+                "responses": [
+                    {"choice": "yes", "outcome": True},
+                    {"choice": "no", "outcome": False},
+                ],
+            }
+        )
         return q.ask()
 
     def __give_item(self, item_record) -> None:
@@ -88,24 +95,26 @@ class Give:
         if not response:
             print("Transfer cancelled.")
             sys.exit(0)
-        result = requests.patch(
-            f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/inventory/transfer/{self.item_receiver}",
-            data = {
-                "charname": os.getenv('GITHUB_USER') or getpass.getuser(),
-                "item_name": self.item_name
-            }
-        )
+        result = Request(
+            method="PATCH",
+            url=f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/inventory/transfer/{self.item_receiver}",
+            data={
+                "charname": os.getenv("GITHUB_USER") or getpass.getuser(),
+                "item_name": self.item_name,
+            },
+        )()
         if result.status_code == 200:
             print("Transfer successful!")
             sys.exit(0)
         print("Transfer not successful")
         sys.exit(1)
 
+
 def cmd():
     """Command entry point for giving items.
-    
+
     Process command line arguments and initialize item transfer.
-    
+
     :return: None
     :rtype: None
     :raises SystemExit: If required arguments are missing

@@ -5,11 +5,13 @@ import base64
 import getpass
 import requests
 import importlib
+from request import Request
 
 from dotenv import load_dotenv
 from .Instance import Instance
 
 load_dotenv()
+
 
 class Usage:
     """A class to handle using and inspecting items from inventory.
@@ -47,20 +49,21 @@ class Usage:
 
     def __search_inventory(self, item_name: str = "") -> dict:
         """Search for an item in the user's inventory.
-        
+
         :param item_name: Name of item to search for
         :type item_name: str, optional
         :return: Item record if found, empty dict if not found
         :rtype: dict
         :raises requests.exceptions.RequestException: If the API request fails
         """
-        item = requests.post(
-            f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/inventory/search/",
-            data = {
-                "charname": os.getenv('GITHUB_USER') or getpass.getuser(),
-                "item_name": self.item_name
-            }
-        )
+        item = Request(
+            "POST",
+            url=f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/inventory/search/",
+            data={
+                "charname": os.getenv("GITHUB_USER") or getpass.getuser(),
+                "item_name": self.item_name,
+            },
+        )()
         if item.status_code == 200:
             return item.json()
         return {}
@@ -74,9 +77,7 @@ class Usage:
         :rtype: None
         :raises ValueError: If binary data cannot be decoded
         """
-        self.source = bytes.fromhex(
-            item_record['item_bytestring']
-        ).decode('utf-8')
+        self.source = bytes.fromhex(item_record["item_bytestring"]).decode("utf-8")
 
     def __use_item(self):
         """Execute an item's use functionality and update inventory.
@@ -89,13 +90,14 @@ class Usage:
         mod = types.ModuleType(self.item_name)
         exec(self.source, mod.__dict__)
         getattr(mod, self.item_name)().use()
-        status = requests.patch(
-            f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/inventory/reduce/",
-            data = {
+        status = Request(
+            "PATCH",
+            url=f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/inventory/reduce/",
+            data={
                 "item_name": self.item_name,
-                "item_owner": os.getenv('GITHUB_USER') or getpass.getuser()
-            }
-        )
+                "item_owner": os.getenv("GITHUB_USER") or getpass.getuser(),
+            },
+        )()
 
     def __get_info(self):
         """Display information about an item by executing its string representation.
@@ -107,6 +109,7 @@ class Usage:
         exec(self.source, mod.__dict__)
         print(f"You look at {self.item_name}. {getattr(mod, self.item_name)()}")
 
+
 def cmd_use():
     """Command entry point for using an item.
 
@@ -114,7 +117,8 @@ def cmd_use():
     :rtype: None
     :raises SystemExit: If no item name provided
     """
-    Usage(item_name = sys.argv[1])
+    Usage(item_name=sys.argv[1])
+
 
 def cmd_info():
     """Command entry point for inspecting an item.
@@ -123,4 +127,4 @@ def cmd_info():
     :rtype: None
     :raises SystemExit: If no item name provided
     """
-    Usage(item_name = sys.argv[1], to_use = False)
+    Usage(item_name=sys.argv[1], to_use=False)
