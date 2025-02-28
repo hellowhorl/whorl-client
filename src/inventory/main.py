@@ -9,10 +9,12 @@ from dotenv import load_dotenv
 
 from rich.table import Table
 from rich.console import Console
+from request import Request
 
 load_dotenv()
 
 # TODO: Move these to a specific command file (like others) instead of main
+
 
 def search(item_name: str = "", qty_required: int = 1) -> bool:
     """Search for an item in the user's inventory.
@@ -25,18 +27,20 @@ def search(item_name: str = "", qty_required: int = 1) -> bool:
     :rtype: bool
     :raises requests.exceptions.RequestException: If the API request fails
     """
-    response = requests.post(
-        f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/inventory/search/",
-        data = {
+    response = Request(
+        method="POST",
+        url=f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/inventory/search/",
+        data={
             "charname": os.getenv("GITHUB_USER") or getpass.getuser(),
-            "item_name": item_name
-        }
-    )
+            "item_name": item_name,
+        },
+    )()
     return response.status_code == 200 and response.json()["item_qty"] >= qty_required
+
 
 def list():
     """Display a formatted table of the user's inventory contents.
-    
+
     Shows item names, quantities, space occupied, and whether items are consumable.
     Also displays total inventory space used and remaining.
 
@@ -46,21 +50,22 @@ def list():
     """
     allowed = ["item_name", "item_qty", "item_bulk", "item_consumable"]
 
-    api_request = requests.get(
-        f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/inventory/list",
-        params = {
-            "charname": os.getenv('GITHUB_USER') or getpass.getuser()
-        }
-    )
+    api_request = Request(
+        method="GET",
+        url=f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/inventory/list",
+        data={"charname": os.getenv("GITHUB_USER") or getpass.getuser()},
+    )()
 
     context = api_request.json()
 
     total_volume = 0
     for item in context:
-        total_volume += item['item_bulk']
+        total_volume += item["item_bulk"]
 
-    table = Table(title=f"""{os.getenv('GITHUB_USER') or getpass.getuser()}'s inventory
-({total_volume}/10.0 spaces; {10.0 - total_volume} spaces remain)""")
+    table = Table(
+        title=f"""{os.getenv('GITHUB_USER') or getpass.getuser()}'s inventory
+({total_volume}/10.0 spaces; {10.0 - total_volume} spaces remain)"""
+    )
     table.add_column("Item name")
     table.add_column("Item count")
     table.add_column("Space Occupied")
