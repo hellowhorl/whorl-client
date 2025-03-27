@@ -146,10 +146,10 @@ class Request:
 
 def false_login_file(should_add: bool = True) -> Path:
     """Calculate repository root path and manage .worldloginfalse file.
-    
+
     This function finds the root directory of the current Git repository,
     then either creates or removes a file named .worldloginfalse in the parent directory.
-    
+
     :param should_add: If True, create the file; if False, remove it if it exists
     :type should_add: bool, optional
     :return: Path to the file (whether created or removed)
@@ -173,7 +173,7 @@ def false_login_file(should_add: bool = True) -> Path:
         # Set path for .worldloginfalse file one directory above repo root
         parent_dir = Path(root_dir).parent
         login_false_file = parent_dir / ".worldloginfalse"
-        
+
         if should_add:
             # Create empty file
             with open(login_false_file, 'w') as f:
@@ -182,7 +182,7 @@ def false_login_file(should_add: bool = True) -> Path:
             # Remove file if it exists
             if login_false_file.exists():
                 login_false_file.unlink()
-                
+
         return login_false_file
-    
+
     return None
