@@ -5,6 +5,7 @@ import requests
 
 from rich.console import Console
 from rich.markdown import Markdown
+from rich.spinner import Spinner
 from request import Request
 from dotenv import load_dotenv
 from omnipresence import report
@@ -26,13 +27,22 @@ class Ego:
 
     :param mode: This only option for mode right now is talk. This will let the program run the behave() function
     :type mode: str(Optional)
+
+    :param chatterbox: Enters "chatterbox" mode, in which the LLM talks first
+    :type chatterbox: bool(Optional)
     """
 
-    def __init__(self, type: str = "", name: str = "", mode="talk"):
+    def __init__(
+        self,
+        type: str = "",
+        name: str = "",
+        mode: str = "talk",
+        chatterbox: bool = False
+    ):
         self.addressee = os.getenv("GITHUB_USER") or getpass.getuser()
         self.archetype = type
         self.named = name or type
-        self.chatterbox = False
+        self.chatterbox = chatterbox
 
         # report persona presence
         if self.archetype:
@@ -85,19 +95,20 @@ class Ego:
 
         :return: None. If the user types 'goodbye' in the chat the chat will end
         """
-        content = Request(
-            method="POST",
-            url=f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/persona/generate/{self.archetype}",
-            data={
-                "charname": os.getenv("GITHUB_USER") or getpass.getuser(),
-                "message": msg,
-            },
-            stream=True,
-        )()
-        response_text = content.json()["response"].strip()
-        attachments = content.json()["attachments"]
-        # TODO: Decide what to do with attachments?
-        console.print(Markdown(response_text))
+        with console.status(Spinner("dots")):
+            content = Request(
+                method="POST",
+                url=f"{os.getenv('API_URL')}:{os.getenv('API_PORT')}/v1/persona/generate/{self.archetype}",
+                data={
+                    "charname": os.getenv("GITHUB_USER") or getpass.getuser(),
+                    "message": msg,
+                },
+                #stream=True,
+            )()
+            response_text = content.json()["response"].strip()
+            attachments = content.json()["attachments"]
+            # TODO: Decide what to do with attachments?
+            console.print(Markdown(response_text))
 
         """ DEPRECATED
         # Check if the response contains a Python code snippet
@@ -132,20 +143,20 @@ class Ego:
     """
 
     def behave(self):
-        """Query the persona API to count messages and sends them.
+        """Query the persona API compute messages and sends them.
 
-        There is a message count and therefore and chatterbox determines if
-        the user or the persona will initiate the conversation.If there is a message count the
-        program will continue to run.
+        API allows a Persona to be a "chatterbox" (i.e. start the conversation); in the
+        event that the Persona should not initiate the conversation, start with a prompt
+        carat for users to write messages.
 
         :params self: No params
 
-        :return: None: this program makes changes in whole message count is defined internally
+        :return: None: Program uses Persona-provided state.
         """
 
         console = Console()
         if self.chatterbox:
-            self.__send_message(console, "")
+            self.__send_message(console, self.initial_message)
         while True:
             msg = input("> ")
             self.__send_message(console, msg)
